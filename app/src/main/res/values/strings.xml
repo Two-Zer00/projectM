@@ -2,6 +2,25 @@
     <string name="app_name">Project M</string>
     <string name="tab_text_1">Popular</string>
     <string name="tab_text_2">Upcoming</string>
+    <string name="movie_details_review">Reviews</string>
+    <string name="movie_details">Movie Details</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- MOVIE DETAILS -->
+
+    <string name="movie_details_relase_date">Release date</string>
+    <string name="movie_details_status">Status</string>
+    <string name="movie_details_budget">Budget</string>
+    <string name="movie_details_revenue">Revenue</string>
+    <string name="movie_details_production_companies">Production companies</string>
+    <string name="movie_details_genres">Genres</string>
+    <string name="movie_details_overview">Overview</string>
+    <string name="movie_details_language">Language</string>
+    <string name="movie_details_duration_measure">hr</string>
+    <string name="movie_details_home_page">Home page</string>
+    <string name="movie_details_duration">Duration</string>
+    <string name="movie_details_empty_fields">Not provided</string>
+    <string name="lorem">porttitor massa id neque aliquam vestibulum morbi blandit cursus risus at ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget gravida cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel facilisis volutpat est velit egestas dui id ornare arcu odio ut sem nulla pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit sed vulputate mi sit amet mauris commodo quis imperdiet massa tincidunt nunc **pulvinar** sapien et ligula ullamcorper malesuada proin libero nunc consequat interdum varius sit</string>
 </resources>

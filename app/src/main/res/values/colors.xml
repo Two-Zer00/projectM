@@ -10,4 +10,6 @@
     <color name="validRate">#6719D6</color>
     <color name="progress">#A971F8</color>
     <color name="releaseBackground">#663700B3</color>
+    <color name="purple_500Alpha">#656200EE</color>
+    <color name="tabs">#774A4A4A</color>
 </resources>

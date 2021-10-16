@@ -1,9 +1,14 @@
 package dev.twozer00.projectm.model;
 
+import android.util.Log;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Trending {
-    private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w342" ;
+public class Trending implements Serializable {
+    private static final String BASE_URL_POSTER = "https://image.tmdb.org/t/p/w500" ;
+    private static final String BASE_URL_BACKDROP = "https://image.tmdb.org/t/p/w780" ;
+    private static final String BASE_URL_PROFILE = "https://image.tmdb.org/t/p/w185" ;
     private boolean adult;
     private String backdrop_path;
     private ArrayList< Integer > genre_ids = new ArrayList<>();
@@ -34,8 +39,22 @@ public class Trending {
     private String original_name;
 
 
-
-    public Trending() {
+    public Object getMediaObject(){
+        Log.d("Trending", "getMediaObject: " + media_type);
+        if(media_type != null){
+            switch (media_type){
+                case "movie":
+                    return new Movie(adult,backdrop_path,genre_ids,id,original_language,original_title,overview,popularity,poster_path,release_date,title,video,vote_average,vote_count);
+                case "person":
+                    return new Person(adult,also_known_as,biography,birthday,deathday,gender,homepage,id,imdb_id,name,place_of_birth,popularity,profile_path);
+                case "tv":
+                    return new TvShow(poster_path,popularity,id,backdrop_path,vote_average,overview,first_air_date,origin_country,genre_ids,original_language,vote_count,name,original_name);
+            }
+        }
+        else{
+            return new Movie(adult,backdrop_path,genre_ids,id,original_language,original_title,overview,popularity,poster_path,release_date,title,video,vote_average,vote_count);
+        }
+        return null;
     }
 
     public Trending(boolean adult, String backdrop_path, ArrayList<Integer> genre_ids, float id, String original_language, String original_title, String overview, float popularity, String poster_path, String release_date, String title, boolean video, String media_type, float vote_average, float vote_count, ArrayList<Movie> also_known_as, String biography, String birthday, String deathday, float gender, String homepage, String imdb_id, String name, String place_of_birth, String profile_path, String first_air_date, ArrayList<String> origin_country, String original_name) {
@@ -86,7 +105,7 @@ public class Trending {
     }
 
     public String getBackdrop_path() {
-        return BASE_URL_IMG + backdrop_path;
+        return BASE_URL_BACKDROP + backdrop_path;
     }
 
     public void setBackdrop_path(String backdrop_path) {
@@ -142,7 +161,7 @@ public class Trending {
     }
 
     public String getPoster_path() {
-        return BASE_URL_IMG+poster_path;
+        return BASE_URL_POSTER+poster_path;
     }
 
     public void setPoster_path(String poster_path) {
@@ -262,7 +281,7 @@ public class Trending {
     }
 
     public String getProfile_path() {
-        return BASE_URL_IMG+profile_path;
+        return BASE_URL_PROFILE+profile_path;
     }
 
     public void setProfile_path(String profile_path) {

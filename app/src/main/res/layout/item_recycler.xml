@@ -3,81 +3,104 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:cardCornerRadius="10dp"
+        android:layout_height="200dp"
         app:cardElevation="10dp"
         android:id="@+id/items"
-        android:layout_margin="10dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="10dp"
         app:cardPreventCornerOverlap="false">
     <LinearLayout
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:id="@+id/item">
         <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
             <ImageView
                     android:id="@+id/poster"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="centerCrop"
+                    android:src="@drawable/ic_backdrop"
                     android:background="@color/cardview_dark_background"
+                    android:transitionName="poster"
             />
             <RelativeLayout
-                    android:padding="5dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignEnd="@id/poster" android:id="@+id/rateBar"
-                    android:layout_alignRight="@id/poster">
-                <ProgressBar
-                        android:id="@+id/ratingBar"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:indeterminate="false"
-                        android:progressDrawable="@drawable/circular_progress_bar"
-                        android:background="@drawable/circle_shape"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:max="100"
-                        android:progress="25" />
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:text="2.5"
-                          android:textSize="30dp"
-                          android:textStyle="bold"
-                          android:textColor="@color/white"
-                          android:id="@+id/rate"
-                          android:layout_centerHorizontal="true"
-                          android:layout_centerVertical="true"
-                          android:theme="@style/AudioFileInfoOverlayText"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/poster"
+                    android:layout_marginTop="7.5dp"
+                    android:transitionName="rating_container"
+                    android:layout_marginEnd="7.5dp"
+                    android:id="@+id/rateBar">
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                    <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_height="wrap_content">
+                        <ProgressBar
+                                android:id="@+id/ratingBar"
+                                android:layout_width="45dp"
+                                android:layout_height="45dp"
+                                android:indeterminate="false"
+                                android:progressDrawable="@drawable/circular_progress_bar"
+                                android:background="@drawable/circle_shape"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:max="100"
+                                android:progress="25" />
+                        <TextView android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:text="2.5"
+                                  android:textSize="13sp"
+                                  android:textStyle="bold"
+                                  android:textColor="@color/white"
+                                  android:id="@+id/rate"
+                                  android:autoSizeTextType="uniform"
+                                  android:layout_centerHorizontal="true"
+                                  android:layout_centerVertical="true"
+                                  android:theme="@style/AudioFileInfoOverlayText"/>
+                    </RelativeLayout>
+                </LinearLayout>
             </RelativeLayout>
             <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/poster">
-                <TextView
-                        android:id="@+id/releaseDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:theme="@style/AudioFileInfoOverlayText"
-                        android:text="Release date: 21-10-21"
-                        android:background="#663700B3"
-                        android:textSize="30sp"
-                        android:gravity="center_horizontal"
-                        android:visibility="invisible"/>
+                    android:layout_alignBottom="@id/poster"
+                    android:id="@+id/relaseLayout">
             </RelativeLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_alignBottom="@id/poster"
+                      android:id="@+id/titleContainer"
+                      android:orientation="vertical">
             <TextView
-                    android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="Title"
-                    android:textColor="@color/white"
-                    android:visibility="invisible"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:gravity="center_horizontal">
+                    android:id="@+id/title"
+                    style="@style/AudioFileInfoOverlayText"
+                    android:textSize="25sp"
+                    android:visibility="gone"
+                    android:fitsSystemWindows="true"
+                    android:autoSizeTextType="uniform"
+                    android:layout_marginHorizontal="5dp"/>
 
-            </TextView>
+            <TextView
+                    android:id="@+id/releaseDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:theme="@style/AudioFileInfoOverlayText"
+                    android:text="21-10-21"
+                    android:textSize="12sp"
+                    android:autoSizeTextType="uniform"
+                    android:visibility="gone"/>
+        </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
+    GradientView
 </androidx.cardview.widget.CardView>

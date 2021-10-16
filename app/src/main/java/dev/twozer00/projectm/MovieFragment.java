@@ -3,19 +3,15 @@ package dev.twozer00.projectm;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.core.view.ScrollingView;
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dev.twozer00.projectm.adapter.MovieAdapter;
@@ -23,6 +19,7 @@ import dev.twozer00.projectm.api.TheMovieDb;
 import dev.twozer00.projectm.model.Movie;
 import dev.twozer00.projectm.model.MovieResponse;
 import dev.twozer00.projectm.model.Trending;
+import dev.twozer00.projectm.utils.GridAutofitLayoutManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,6 +50,7 @@ public class MovieFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -66,7 +64,13 @@ public class MovieFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         movieAdapter = new MovieAdapter(view.getContext());
         movieAdapter.setQuery(query);
-        layoutManager = new GridLayoutManager(view.getContext(),2);
+        if (query.equals("Upcoming")){
+            layoutManager = new GridLayoutManager(view.getContext(),3);
+        }
+        else {
+            layoutManager = new GridLayoutManager(view.getContext(),GridLayoutManager.VERTICAL);
+        }
+        //layoutManager = new GridAutofitLayoutManager(view.getContext(),50);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(movieAdapter);
         getData(1,query);
@@ -82,7 +86,7 @@ public class MovieFragment extends Fragment {
                         isLoading = true;
                         Log.d("BB", "gettin data: ");
                         getData(movieResponse.getPage()+1,query);
-                        progressBar.setVisibility(View.VISIBLE);
+                        //progressBar.setVisibility(View.VISIBLE);
                         ObjectAnimator animation = ObjectAnimator.ofFloat(progressBar, "translationY", convertDpToPixel(-10,view.getContext()));
                         animation.setDuration(500);
                         animation.start();
@@ -96,6 +100,7 @@ public class MovieFragment extends Fragment {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
     private void getData(int page,String query){
+        progressBar.setVisibility(View.VISIBLE);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -128,7 +133,7 @@ public class MovieFragment extends Fragment {
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            //progressBar.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
 
                         @Override

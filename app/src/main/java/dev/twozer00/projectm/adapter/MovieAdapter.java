@@ -1,48 +1,51 @@
 package dev.twozer00.projectm.adapter;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.res.Resources;
+import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Parcelable;
 import android.util.Log;
+import android.util.Pair;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import dev.twozer00.projectm.DetailsActivity;
+import dev.twozer00.projectm.MainActivity;
+import dev.twozer00.projectm.MovieDetails;
 import dev.twozer00.projectm.R;
 import dev.twozer00.projectm.model.Movie;
 import dev.twozer00.projectm.model.Trending;
-import dev.twozer00.projectm.utils.ImageHandler;
 import dev.twozer00.projectm.utils.MyDiffUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static dev.twozer00.projectm.utils.Utils.dpToPx;
+import static dev.twozer00.projectm.utils.Utils.spToPx;
+
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>  {
-    private static final String BOOK_DETAIL_KEY = "";
     private ArrayList<Trending> dataset;
     private Context context;
     private Trending movie;
@@ -61,37 +64,62 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler, parent, false);
         return new ViewHolder(view);
     }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull @NotNull MovieAdapter.ViewHolder holder, int position) {
         movie = dataset.get(position);
-        Picasso.get().load(Uri.parse(movie.getPoster_path())).into(holder.Poster, new Callback() {
+        String uriImage = movie.getBackdrop_path();
+        if(query.equals("Upcoming")){
+            holder.Poster.setTransitionName("poster");
+        }
+        else {
+            holder.Poster.setTransitionName("backdrop");
+        }
+        if(uriImage.contains("null") || query.equals("Upcoming")){
+            uriImage = movie.getPoster_path();
+        }
+        Picasso.get().load(Uri.parse(uriImage)).into(holder.Poster, new Callback() {
             @Override
             public void onSuccess() {
                 Bitmap bitmap = ((BitmapDrawable)holder.Poster.getDrawable()).getBitmap();
-                holder.releaseDate.setBackgroundColor((Palette.from(bitmap)).generate().getDominantColor(context.getColor(R.color.releaseBackground)));
+                int color = Palette.from(bitmap).generate().getDominantColor(context.getColor(R.color.purple_500));
+                GradientDrawable drawable = new GradientDrawable();
+                drawable.setColors(new int[]{Color.argb(0,1,1,1),color});
+                holder.linearLayout.setBackground(drawable);
+                if (query.equals("Upcoming")){
+                    holder.title.setVisibility(View.GONE);
+                }
+                else{
+                    holder.title.setVisibility(View.VISIBLE);
+                }
             }
             @Override
             public void onError(Exception e) {
-                if(query.equals("Popular")){
-                    if(movie.getMedia_type().equals("movie")){
-                    holder.title.setText(movie.getTitle());
-                    holder.title.setVisibility(View.VISIBLE);
-                    }
-                    else{
-                        holder.title.setText(movie.getName());
-                        holder.title.setVisibility(View.VISIBLE);
-                    }
-                }
-                else{
-                    holder.title.setText(movie.getTitle());
-                    holder.title.setVisibility(View.VISIBLE);
-                }
+                Log.d("Title", "onError: ");
+                holder.title.setVisibility(View.VISIBLE);
+                holder.title.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             }
         });
 
+
+
+        if(query.equals("Popular")){
+            if(movie.getMedia_type().equals("movie")){
+                holder.title.setText(movie.getTitle());
+            }
+            else{
+                holder.title.setText(movie.getName());
+            }
+        }
+        else{
+            holder.title.setText(movie.getTitle());
+            holder.ratingBar.getLayoutParams().width =dpToPx(150,context)/5;
+            holder.Rate.setTextSize(spToPx(150,context)/5f);
+            holder.releaseDate.setTextSize(spToPx(7,context));
+            holder.item.getLayoutParams().height = dpToPx(200,context);
+        }
         Picasso.get().setLoggingEnabled(true);
+        Picasso.get().setIndicatorsEnabled(true);
         holder.Rate.setText(String.valueOf(movie.getVote_average()));
 
 
@@ -108,6 +136,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             e.printStackTrace();
         }
         DateFormat Date = DateFormat.getDateInstance();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(convertedDate);
         Log.d("TIME", "onBindViewHolder: " + System.currentTimeMillis() + " " + convertedDate.getTime() );
         if(convertedDate.getTime()>System.currentTimeMillis()){
             holder.releaseDate.setText(Date.format(convertedDate));
@@ -125,6 +155,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             holder.ratingBar.setProgress((int) (movie.getVote_average()*10),true);
         }
         else{
+            holder.relativeLayout.setTransitionName("");
             holder.relativeLayout.setVisibility(View.INVISIBLE);
         }
     }
@@ -140,8 +171,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new MyDiffUtil(dataset,newList));
         result.dispatchUpdatesTo(this);
         dataset = newList;
-//        dataset.addAll(Movies);
-//        notifyDataSetChanged();
+        /*dataset.addAll(Movies);
+        notifyDataSetChanged();*/ // Old data bind to recyclerview, freezes UI
     }
 
     public void setQuery(String query){
@@ -156,6 +187,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         private ProgressBar ratingBar;
         private RelativeLayout relativeLayout;
         private TextView releaseDate;
+        private LinearLayout linearLayout;
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             Poster = itemView.findViewById(R.id.poster);
@@ -165,6 +197,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             releaseDate = itemView.findViewById(R.id.releaseDate);
             item = itemView.findViewById(R.id.items);
             title = itemView.findViewById(R.id.title);
+            linearLayout = itemView.findViewById(R.id.titleContainer);
             item.setOnLongClickListener(this);
             item.setOnClickListener(this);
         }
@@ -185,7 +218,49 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 //        }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View view) {
+            movie = dataset.get(getAdapterPosition());
+            Log.d("POSTER", "onClick: " + Poster.getId());
+            switch (view.getId()) {
+                case R.id.items:
+                    if(query.equals("Popular")){
+                        switch (movie.getMedia_type()){
+                            case "movie":
+                                Intent i = new Intent(view.getContext(), MovieDetails.class);
+                                Pair[] pair = new Pair[(movie.getVote_count()>0?2:1)]; // remove rating bar transation if there isnt votes
+                                if (movie.getVote_count()>0){
+                                    pair[0] = new Pair<View,String>(relativeLayout,"rating_container");
+                                    pair[1] = new Pair<View,String>(Poster,"backdrop");
+                                }
+                                else{
+                                    pair[0] = new Pair<View,String>(relativeLayout,"backdrop");
+                                }
+                                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((MainActivity)view.getContext(),pair);
+                                i.putExtra("media",(Movie) movie.getMediaObject());
+                                Log.d("POSTER", "onClick: ");
+                                view.getContext().startActivity(i,options.toBundle());
+                                break;
+                        }
+                    }
+                    else{
+                        Intent i = new Intent(view.getContext(), MovieDetails.class);
+                        Pair[] pair = new Pair[(movie.getVote_count()>0?2:1)]; // remove rating bar transation if there isnt votes
+                        if (movie.getVote_count()>0){
+                            Log.d("RATING BAR", "rating bar");
+                            pair[0] = new Pair<View,String>(relativeLayout,"rating_container");
+                            pair[1] = new Pair<View,String>(Poster,"poster");
+                        }
+                        else{
+                            Log.d("RATING BAR", "no rating bar");
+                            pair[0] = new Pair<View,String>(Poster,"poster");
+                        }
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((MainActivity)view.getContext(),pair);
+                        i.putExtra("media",(Movie) movie.getMediaObject());
+                        Log.d("POSTER", "onClick: ");
+                        view.getContext().startActivity(i,options.toBundle());
+                    }
+                break;
+            }
 
         }
 
@@ -196,7 +271,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 case R.id.items:
 //                    Snackbar.make(itemView, movie.getTitle(), Snackbar.LENGTH_LONG)
 //                            .setAction("Action", null).show();
-                    Toast.makeText(context,""+movie.getOriginal_title(),Toast.LENGTH_LONG).show();
+                    String title = "";
+                    if(query.equals("Popular")){
+                        if (movie.getMedia_type().equals("movie")){
+                            title = movie.getTitle();
+                        }
+                        else{
+                            title = movie.getName();
+                        }
+                    }
+                    else{
+                        title = movie.getTitle();
+                    }
+                    Toast.makeText(context,title,Toast.LENGTH_LONG).show();
                 break;
             }
             return false;

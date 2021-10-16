@@ -1,8 +1,9 @@
 package dev.twozer00.projectm.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Person {
+public class Person implements Serializable {
 
     private boolean adult;
     ArrayList< Movie > also_known_as = new ArrayList<>();

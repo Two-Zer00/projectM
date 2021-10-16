@@ -1,16 +1,16 @@
 package dev.twozer00.projectm.utils;
 
 import androidx.recyclerview.widget.DiffUtil;
-import dev.twozer00.projectm.model.Movie;
+import dev.twozer00.projectm.model.Review;
 import dev.twozer00.projectm.model.Trending;
 
 import java.util.ArrayList;
 
-public class MyDiffUtil extends DiffUtil.Callback{
-    private ArrayList<Trending> oldList;
-    private ArrayList<Trending> newList;
+public class DiffUtilReviews extends DiffUtil.Callback {
+    private ArrayList<Review> oldList;
+    private ArrayList<Review> newList;
 
-    public MyDiffUtil(ArrayList<Trending> oldList, ArrayList<Trending> newList) {
+    public DiffUtilReviews(ArrayList<Review> oldList, ArrayList<Review> newList) {
         this.oldList = oldList;
         this.newList = newList;
     }

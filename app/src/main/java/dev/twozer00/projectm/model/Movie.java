@@ -3,10 +3,12 @@ package dev.twozer00.projectm.model;
 
 import androidx.annotation.NonNull;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Movie{
-    private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w342" ;
+public class Movie implements Serializable {
+    private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/original" ;
     private boolean adult;
     private String backdrop_path;
     private ArrayList< Integer > genre_ids = new ArrayList<>();

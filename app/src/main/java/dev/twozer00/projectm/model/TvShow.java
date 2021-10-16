@@ -1,8 +1,9 @@
 package dev.twozer00.projectm.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TvShow {
+public class TvShow implements Serializable {
     private String poster_path;
     private float popularity;
     private float id;
