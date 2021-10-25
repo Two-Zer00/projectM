@@ -3,10 +3,13 @@ package dev.twozer00.projectm.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static dev.twozer00.projectm.utils.Constants.BASE_URL_IMG;
+import static dev.twozer00.projectm.utils.Constants.BASE_URL_IMG_PROFILE;
+
 public class Person implements Serializable {
 
     private boolean adult;
-    ArrayList< Movie > also_known_as = new ArrayList<>();
+    ArrayList< String > also_known_as = new ArrayList<>();
     private String biography = null;
     private String birthday = null;
     private String deathday = null;
@@ -22,7 +25,7 @@ public class Person implements Serializable {
     public Person() {
     }
 
-    public Person(boolean adult, ArrayList<Movie> also_known_as, String biography, String birthday, String deathday, float gender, String homepage, float id, String imdb_id, String name, String place_of_birth, float popularity, String profile_path) {
+    public Person(boolean adult, ArrayList<String> also_known_as, String biography, String birthday, String deathday, float gender, String homepage, float id, String imdb_id, String name, String place_of_birth, float popularity, String profile_path) {
         this.adult = adult;
         this.also_known_as = also_known_as;
         this.biography = biography;
@@ -85,7 +88,7 @@ public class Person implements Serializable {
     }
 
     public String getProfile_path() {
-        return profile_path;
+        return BASE_URL_IMG_PROFILE + profile_path;
     }
 
     // Setter Methods
@@ -136,5 +139,24 @@ public class Person implements Serializable {
 
     public void setProfile_path(String profile_path) {
         this.profile_path = profile_path;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "adult=" + adult +
+                ", also_known_as=" + also_known_as +
+                ", biography='" + biography + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", deathday='" + deathday + '\'' +
+                ", gender=" + gender +
+                ", homepage='" + homepage + '\'' +
+                ", id=" + id +
+                ", imdb_id='" + imdb_id + '\'' +
+                ", name='" + name + '\'' +
+                ", place_of_birth='" + place_of_birth + '\'' +
+                ", popularity=" + popularity +
+                ", profile_path='" + profile_path + '\'' +
+                '}';
     }
 }

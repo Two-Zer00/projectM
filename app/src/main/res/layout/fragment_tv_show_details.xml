@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TvShowDetailsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TableRow android:layout_width="1dp">
+                    <TextView
+                        android:text="@string/details_relase_date"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:padding="3dip"
+                        android:textAlignment="textEnd"
+                        android:text="@string/app_name"
+                        android:id="@+id/releaseDate"/>
+                </TableRow>
+                <TableRow android:layout_width="1dp">
+                    <TextView
+                        android:text="@string/details_last_air_date_tv_show"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:padding="3dip"
+                        android:textAlignment="textEnd"
+                        android:text="@string/app_name"
+                        android:id="@+id/last_air_date"/>
+                </TableRow>
+                <TableRow android:layout_width="1dp">
+                    <TextView
+                        android:text="@string/details_duration_tv_show"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:padding="3dip"
+                        android:textAlignment="textEnd"
+                        android:text="@string/app_name"
+                        android:id="@+id/duration"/>
+                </TableRow>
+                <TableRow android:layout_width="1dp">
+                    <TextView
+                        android:text="@string/details_number_of_episodes_tv_show"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:padding="3dip"
+                        android:textAlignment="textEnd"
+                        android:text="@string/app_name"
+                        android:id="@+id/episodes_number"/>
+                </TableRow>
+                <TableRow android:layout_width="1dp">
+                    <TextView
+                        android:text="@string/details_number_of_seasons_tv_show"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:padding="3dip"
+                        android:textAlignment="textEnd"
+                        android:text="@string/app_name"
+                        android:id="@+id/seasons_number"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:text="@string/details_status"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:padding="3dip"
+                        android:layout_weight="1"
+                        android:textAlignment="textEnd"
+                        android:text="@string/app_name"
+                        android:id="@+id/status"/>
+                </TableRow>
+                <TableRow android:layout_width="1dp">
+                    <TextView
+                        android:text="@string/details_type_tv_show"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:padding="3dip"
+                        android:textAlignment="textEnd"
+                        android:text="@string/app_name"
+                        android:id="@+id/type"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:text="@string/details_genres"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:padding="3dip"
+                        android:layout_weight="1"
+                        android:textAlignment="textEnd"
+                        android:text="@string/app_name"
+                        android:id="@+id/genres"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:text="@string/details_language"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:padding="3dip"
+                        android:layout_weight="1"
+                        android:textAlignment="textEnd"
+                        android:text="@string/app_name"
+                        android:id="@+id/language"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:text="@string/details_home_page"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:padding="3dip"
+                        android:layout_weight="1"
+                        android:textAlignment="textEnd"
+                        android:text="@string/app_name"
+                        android:autoLink="web"
+                        android:textColorLink="@color/purple_700"
+                        android:id="@+id/home_page"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:text="@string/details_overview"
+                        android:padding="3dip"/>
+                </TableRow>
+                <TextView
+                    android:padding="3dip"
+                    android:layout_gravity="right"
+                    android:text="@string/app_name"
+                    android:justificationMode="inter_word"
+                    android:id="@+id/detailed_overview"/>
+                <!--            <TextView-->
+                <!--                android:text="@string/movie_details_production_companies"-->
+                <!--                android:padding="3dip"/>-->
+                <!--            <HorizontalScrollView>-->
+                <!--                <TextView-->
+                <!--                    android:text="@string/app_name"-->
+                <!--                    android:padding="3dip"-->
+                <!--                    android:id="@+id/production_companies" android:layout_height="match_parent" android:layout_width="wrap_content"/>-->
+                <!--            </HorizontalScrollView>-->
+            </TableLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>

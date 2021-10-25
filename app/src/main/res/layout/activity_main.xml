@@ -9,8 +9,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:theme="@style/Theme.ProjectM.AppBarOverlay">
+            android:layout_width="match_parent">
         <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
@@ -20,12 +19,13 @@
                 android:padding="@dimen/appbar_padding"
                 android:text="@string/app_name"
                 app:layout_scrollFlags="scroll|enterAlways"
-                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                android:textColor="@color/white"/>
         <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
+                android:background="@color/purple_500"
                 app:tabSelectedTextColor="@color/white"
                 app:tabIndicatorColor="@color/white"/>
     </com.google.android.material.appbar.AppBarLayout>

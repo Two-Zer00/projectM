@@ -25,11 +25,11 @@
         <item name="android:shadowRadius">1</item>
         <item name="autoSizeTextType">uniform</item>
         <item name="colorControlNormal">@color/white</item>
+        <item name="background">@color/purple_500</item>
     </style>
     <style name="Theme.ProjectM.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="background">@color/purple_500</item>
     </style>
-    <style name="Theme.ProjectM.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    <style name="Theme.ProjectM.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 </resources>

@@ -4,6 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ReviewFragment">
+    <TextView
+        android:id="@+id/empty"
+        android:layout_marginTop="20dp"
+        android:autoSizeTextType="uniform"
+        android:layout_width="match_parent"
+        android:text="@string/no_reviews"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

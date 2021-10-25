@@ -18,7 +18,7 @@
                 android:layout_height="match_parent">
                 <TableRow android:layout_width="1dp">
                     <TextView
-                        android:text="@string/movie_details_relase_date"
+                        android:text="@string/details_relase_date"
                         android:padding="3dip"/>
                     <TextView
                         android:layout_weight="1"
@@ -29,7 +29,7 @@
                 </TableRow>
                 <TableRow android:layout_width="1dp">
                     <TextView
-                        android:text="@string/movie_details_duration"
+                        android:text="@string/details_duration"
                         android:padding="3dip"/>
                     <TextView
                         android:layout_weight="1"
@@ -40,7 +40,7 @@
                 </TableRow>
                 <TableRow>
                     <TextView
-                        android:text="@string/movie_details_status"
+                        android:text="@string/details_status"
                         android:padding="3dip"/>
                     <TextView
                         android:padding="3dip"
@@ -51,7 +51,7 @@
                 </TableRow>
                 <TableRow>
                     <TextView
-                        android:text="@string/movie_details_budget"
+                        android:text="@string/details_budget"
                         android:padding="3dip"/>
                     <TextView
                         android:padding="3dip"
@@ -62,7 +62,7 @@
                 </TableRow>
                 <TableRow>
                     <TextView
-                        android:text="@string/movie_details_revenue"
+                        android:text="@string/details_revenue"
                         android:padding="3dip"/>
                     <TextView
                         android:padding="3dip"
@@ -74,7 +74,7 @@
                 </TableRow>
                 <TableRow>
                     <TextView
-                        android:text="@string/movie_details_genres"
+                        android:text="@string/details_genres"
                         android:padding="3dip"/>
                     <TextView
                         android:padding="3dip"
@@ -85,7 +85,7 @@
                 </TableRow>
                 <TableRow>
                     <TextView
-                        android:text="@string/movie_details_language"
+                        android:text="@string/details_language"
                         android:padding="3dip"/>
                     <TextView
                         android:padding="3dip"
@@ -96,7 +96,7 @@
                 </TableRow>
                 <TableRow>
                     <TextView
-                        android:text="@string/movie_details_home_page"
+                        android:text="@string/details_home_page"
                         android:padding="3dip"/>
                     <TextView
                         android:padding="3dip"
@@ -109,7 +109,7 @@
                 </TableRow>
                 <TableRow>
                     <TextView
-                        android:text="@string/movie_details_overview"
+                        android:text="@string/details_overview"
                         android:padding="3dip"/>
                 </TableRow>
                 <TextView
@@ -118,15 +118,6 @@
                     android:text="@string/app_name"
                     android:justificationMode="inter_word"
                     android:id="@+id/detailed_overview"/>
-                <!--            <TextView-->
-                <!--                android:text="@string/movie_details_production_companies"-->
-                <!--                android:padding="3dip"/>-->
-                <!--            <HorizontalScrollView>-->
-                <!--                <TextView-->
-                <!--                    android:text="@string/app_name"-->
-                <!--                    android:padding="3dip"-->
-                <!--                    android:id="@+id/production_companies" android:layout_height="match_parent" android:layout_width="wrap_content"/>-->
-                <!--            </HorizontalScrollView>-->
             </TableLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

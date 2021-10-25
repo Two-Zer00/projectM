@@ -44,9 +44,10 @@
 
                         <ImageView
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_centerVertical="true"
+                                android:layout_height="200dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_nocover"
+                                android:src="@drawable/background"
                                 android:id="@+id/poster"
                                 android:transitionName="poster"/>
                         <RelativeLayout
@@ -56,10 +57,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignTop="@id/poster"
                                 android:layout_alignEnd="@id/poster"
-                                android:layout_marginTop="40dp"
-                                android:transitionName="rating_container"
+                                android:layout_marginTop="5dp"
                                 android:visibility="gone"
-                                android:layout_marginEnd="3dp">
+                                android:transitionName="rating_container"
+                                android:layout_marginEnd="5dp">
                             <ProgressBar
                                     android:id="@+id/ratingBar"
                                     android:layout_width="45dp"

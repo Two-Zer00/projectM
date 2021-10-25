@@ -1,5 +1,6 @@
 package dev.twozer00.projectm.adapter;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
@@ -31,8 +32,11 @@ import com.squareup.picasso.Target;
 import dev.twozer00.projectm.MainActivity;
 import dev.twozer00.projectm.MovieDetails;
 import dev.twozer00.projectm.R;
+import dev.twozer00.projectm.TvShowDetails;
 import dev.twozer00.projectm.model.Movie;
 import dev.twozer00.projectm.model.Trending;
+import dev.twozer00.projectm.model.TvShow;
+import dev.twozer00.projectm.utils.DiffUtilMovie;
 import dev.twozer00.projectm.utils.MyDiffUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,15 +50,18 @@ import static dev.twozer00.projectm.utils.Utils.dpToPx;
 import static dev.twozer00.projectm.utils.Utils.spToPx;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>  {
-    private ArrayList<Trending> dataset;
+    private ArrayList<Movie> dataset;
     private Context context;
-    private Trending movie;
-    private String query;
-    private Target target;
+    private Movie movie;
 
     public MovieAdapter(Context context) {
         dataset = new ArrayList<>();
         this.context = context;
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull @NotNull ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
     }
 
     @NonNull
@@ -62,121 +69,142 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler, parent, false);
+        view.findViewById(R.id.poster);
         return new ViewHolder(view);
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull @NotNull MovieAdapter.ViewHolder holder, int position) {
         movie = dataset.get(position);
-        String uriImage = movie.getBackdrop_path();
-        if(query.equals("Upcoming")){
-            holder.Poster.setTransitionName("poster");
-        }
-        else {
-            holder.Poster.setTransitionName("backdrop");
-        }
-        if(uriImage.contains("null") || query.equals("Upcoming")){
-            uriImage = movie.getPoster_path();
-        }
-        Picasso.get().load(Uri.parse(uriImage)).into(holder.Poster, new Callback() {
+        holder.title.setText(movie.getTitle());
+        Picasso.get().load(movie.getPoster_path()).into(holder.Poster, new Callback() {
             @Override
             public void onSuccess() {
-                Bitmap bitmap = ((BitmapDrawable)holder.Poster.getDrawable()).getBitmap();
-                int color = Palette.from(bitmap).generate().getDominantColor(context.getColor(R.color.purple_500));
-                GradientDrawable drawable = new GradientDrawable();
-                drawable.setColors(new int[]{Color.argb(0,1,1,1),color});
-                holder.linearLayout.setBackground(drawable);
-                if (query.equals("Upcoming")){
-                    holder.title.setVisibility(View.GONE);
-                }
-                else{
-                    holder.title.setVisibility(View.VISIBLE);
-                }
+
             }
+
             @Override
             public void onError(Exception e) {
-                Log.d("Title", "onError: ");
                 holder.title.setVisibility(View.VISIBLE);
-                holder.title.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             }
         });
-
-
-
-        if(query.equals("Popular")){
-            if(movie.getMedia_type().equals("movie")){
-                holder.title.setText(movie.getTitle());
-            }
-            else{
-                holder.title.setText(movie.getName());
-            }
+        if(movie.getVote_count()<1){
+            holder.relativeLayout.setVisibility(View.GONE);
         }
         else{
-            holder.title.setText(movie.getTitle());
-            holder.ratingBar.getLayoutParams().width =dpToPx(150,context)/5;
-            holder.Rate.setTextSize(spToPx(150,context)/5f);
-            holder.releaseDate.setTextSize(spToPx(7,context));
-            holder.item.getLayoutParams().height = dpToPx(200,context);
-        }
-        Picasso.get().setLoggingEnabled(true);
-        Picasso.get().setIndicatorsEnabled(true);
-        holder.Rate.setText(String.valueOf(movie.getVote_average()));
-
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
-        Date convertedDate = new Date();
-
-        try {
-            if (movie.getRelease_date() != null) {
-                Objects.requireNonNull(movie.getRelease_date());
-                convertedDate = dateFormat.parse(movie.getRelease_date());
-            }
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        DateFormat Date = DateFormat.getDateInstance();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(convertedDate);
-        Log.d("TIME", "onBindViewHolder: " + System.currentTimeMillis() + " " + convertedDate.getTime() );
-        if(convertedDate.getTime()>System.currentTimeMillis()){
-            holder.releaseDate.setText(Date.format(convertedDate));
-            holder.releaseDate.setVisibility(View.VISIBLE);
-        }
-
-
-
-
-
-        if(movie.getVote_average()>0){
             if(movie.getVote_count()>100){
                 holder.ratingBar.getProgressDrawable().setColorFilter(context.getColor(R.color.validRate), android.graphics.PorterDuff.Mode.SRC_IN);
             }
-            holder.ratingBar.setProgress((int) (movie.getVote_average()*10),true);
+            holder.ratingBar.setProgress((int) (movie.getVote_average()*10),false);
+            holder.Rate.setText(String.valueOf(movie.getVote_average()));
         }
-        else{
-            holder.relativeLayout.setTransitionName("");
-            holder.relativeLayout.setVisibility(View.INVISIBLE);
-        }
+//        if(query.equals("Upcoming")){
+//            holder.Poster.setTransitionName("poster");
+//        }
+//        else {
+//            holder.Poster.setTransitionName("backdrop");
+//        }
+//        if(uriImage.contains("null") || query.equals("Upcoming")){
+//            uriImage = movie.getPoster_path();
+//        }
+//        Picasso.get().load(Uri.parse(uriImage)).into(holder.Poster, new Callback() {
+//            @Override
+//            public void onSuccess() {
+//                Bitmap bitmap = ((BitmapDrawable)holder.Poster.getDrawable()).getBitmap();
+//                int color = Palette.from(bitmap).generate().getDominantColor(context.getColor(R.color.purple_500));
+//                GradientDrawable drawable = new GradientDrawable();
+//                drawable.setColors(new int[]{Color.argb(0,1,1,1),color});
+//                holder.linearLayout.setBackground(drawable);
+//                if (query.equals("Upcoming")){
+//                    holder.title.setVisibility(View.GONE);
+//                }
+//                else{
+//                    holder.title.setVisibility(View.VISIBLE);
+//                }
+//            }
+//            @Override
+//            public void onError(Exception e) {
+//                Log.d("Title", "onError: ");
+//                holder.title.setVisibility(View.VISIBLE);
+//                holder.title.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+//            }
+//        });
+//
+//        if(query.equals("Popular")){
+//            if(movie.getMedia_type().equals("movie")){
+//                holder.title.setText(movie.getTitle());
+//            }
+//            else{
+//                holder.title.setText(movie.getName());
+//            }
+//        }
+//        else{
+//            holder.title.setText(movie.getTitle());
+//            holder.ratingBar.getLayoutParams().width =dpToPx(150,context)/5;
+//            holder.Rate.setTextSize(spToPx(150,context)/5f);
+//            holder.releaseDate.setTextSize(spToPx(7,context));
+//            holder.item.getLayoutParams().height = dpToPx(200,context);
+//        }
+//        Picasso.get().setLoggingEnabled(true);
+//        Picasso.get().setIndicatorsEnabled(true);
+//        holder.Rate.setText(String.valueOf(movie.getVote_average()));
+//
+//
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+//        Date convertedDate = new Date();
+//
+//        try {
+//            if (movie.getRelease_date() != null) {
+//                Objects.requireNonNull(movie.getRelease_date());
+//                convertedDate = dateFormat.parse(movie.getRelease_date());
+//            }
+//        } catch (ParseException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        DateFormat Date = DateFormat.getDateInstance();
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(convertedDate);
+//        Log.d("TIME", "onBindViewHolder: " + System.currentTimeMillis() + " " + convertedDate.getTime() );
+//        if(convertedDate.getTime()>System.currentTimeMillis()){
+//            holder.releaseDate.setText(Date.format(convertedDate));
+//            holder.releaseDate.setVisibility(View.VISIBLE);
+//            if(query.equals("Popular")){
+//                holder.releaseDate.setTextSize(spToPx(15    ,context));
+//                holder.releaseDate.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_NONE);
+//                holder.releaseDate.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+//            }
+//        }
+//
+//        if(movie.getVote_average()>0){
+//            if(movie.getVote_count()>100){
+//                holder.ratingBar.getProgressDrawable().setColorFilter(context.getColor(R.color.validRate), android.graphics.PorterDuff.Mode.SRC_IN);
+//            }
+//            holder.ratingBar.setProgress((int) (movie.getVote_average()*10),true);
+//        }
+//        else{
+//            holder.relativeLayout.setTransitionName("");
+//            holder.relativeLayout.setVisibility(View.INVISIBLE);
+//        }
     }
 
     @Override
     public int getItemCount() {
         return dataset.size();
     }
-    public void addElemList(ArrayList<Trending> Movies){
-        ArrayList<Trending> newList = (ArrayList<Trending>) dataset.clone();
+    public void addElemList(ArrayList<Movie> Movies){
+        ArrayList<Movie> newList = (ArrayList<Movie>) dataset.clone();
         newList.addAll(Movies);
         Log.d("LISTS", "addElemList: " + dataset.toString() + " " + newList);
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new MyDiffUtil(dataset,newList));
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtilMovie(dataset,newList));
         result.dispatchUpdatesTo(this);
         dataset = newList;
         /*dataset.addAll(Movies);
         notifyDataSetChanged();*/ // Old data bind to recyclerview, freezes UI
     }
-
-    public void setQuery(String query){
-        this.query = query;
+    public void replaceListElements(ArrayList<Movie> movies){
+        dataset = movies;
+        notifyDataSetChanged(); // Old data bind to recyclerview, freezes UI
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener,View.OnClickListener {
@@ -201,21 +229,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             item.setOnLongClickListener(this);
             item.setOnClickListener(this);
         }
-//
-//        @Override
-//        public void onClick(View view) {
-//            Poster = itemView.findViewById(R.id.poster);
-//            movie = dataset.get(getAdapterPosition());
-//            switch (view.getId()) {
-//                case R.id.items:
-//                    Snackbar.make(itemView, "Replace with your own action " + movie.getTitle(), Snackbar.LENGTH_LONG)
-//                            .setAction("Action", null).show();
-////                    Intent i = new Intent(view.getContext(), DetailsActivity.class);
-////                    i.putExtra(BOOK_DETAIL_KEY, movie);
-////                    view.getContext().startActivity(i);
-//                    break;
-//            }
-//        }
 
         @Override
         public void onClick(View view) {
@@ -223,11 +236,29 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             Log.d("POSTER", "onClick: " + Poster.getId());
             switch (view.getId()) {
                 case R.id.items:
-                    if(query.equals("Popular")){
+                    Intent i = new Intent(view.getContext(), MovieDetails.class);
+                    Pair[] pair = new Pair[(movie.getVote_count()>0?2:1)]; // remove rating bar transation if there isnt votes
+                    if (movie.getVote_count()>0){
+                        Log.d("RATING BAR", "rating bar");
+                        pair[0] = new Pair<View,String>(relativeLayout,"rating_container");
+                        pair[1] = new Pair<View,String>(Poster,"poster");
+                    }
+                    else{
+                        Log.d("RATING BAR", "no rating bar");
+                        pair[0] = new Pair<View,String>(Poster,"poster");
+                    }
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) view.getContext(),pair);
+                    i.putExtra("media",movie);
+                    Log.d("POSTER", "onClick: ");
+                    view.getContext().startActivity(i,options.toBundle());
+                    /*if(query.equals("Popular")){
+                        Intent i = null;
+                        Pair[] pair = null;
+                        ActivityOptions options = null;
                         switch (movie.getMedia_type()){
                             case "movie":
-                                Intent i = new Intent(view.getContext(), MovieDetails.class);
-                                Pair[] pair = new Pair[(movie.getVote_count()>0?2:1)]; // remove rating bar transation if there isnt votes
+                                i = new Intent(view.getContext(), MovieDetails.class);
+                                pair = new Pair[(movie.getVote_count()>0?2:1)]; // remove rating bar transation if there isnt votes
                                 if (movie.getVote_count()>0){
                                     pair[0] = new Pair<View,String>(relativeLayout,"rating_container");
                                     pair[1] = new Pair<View,String>(Poster,"backdrop");
@@ -235,11 +266,24 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                                 else{
                                     pair[0] = new Pair<View,String>(relativeLayout,"backdrop");
                                 }
-                                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((MainActivity)view.getContext(),pair);
+                                options = ActivityOptions.makeSceneTransitionAnimation((MainActivity)view.getContext(),pair);
                                 i.putExtra("media",(Movie) movie.getMediaObject());
-                                Log.d("POSTER", "onClick: ");
                                 view.getContext().startActivity(i,options.toBundle());
-                                break;
+                            break;
+                            case "tv":
+                                i = new Intent(view.getContext(), TvShowDetails.class);
+                                pair = new Pair[(movie.getVote_count()>0?2:1)]; // remove rating bar transation if there isnt votes
+                                if (movie.getVote_count()>0){
+                                    pair[0] = new Pair<View,String>(relativeLayout,"rating_container");
+                                    pair[1] = new Pair<View,String>(Poster,"backdrop");
+                                }
+                                else{
+                                    pair[0] = new Pair<View,String>(relativeLayout,"backdrop");
+                                }
+                                options = ActivityOptions.makeSceneTransitionAnimation((MainActivity)view.getContext(),pair);
+                                i.putExtra("media",(TvShow) movie.getMediaObject());
+                                view.getContext().startActivity(i,options.toBundle());
+                            break;
                         }
                     }
                     else{
@@ -258,7 +302,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                         i.putExtra("media",(Movie) movie.getMediaObject());
                         Log.d("POSTER", "onClick: ");
                         view.getContext().startActivity(i,options.toBundle());
-                    }
+                    }*/
                 break;
             }
 
@@ -271,7 +315,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 case R.id.items:
 //                    Snackbar.make(itemView, movie.getTitle(), Snackbar.LENGTH_LONG)
 //                            .setAction("Action", null).show();
-                    String title = "";
+                    /*String title = "";
                     if(query.equals("Popular")){
                         if (movie.getMedia_type().equals("movie")){
                             title = movie.getTitle();
@@ -283,7 +327,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                     else{
                         title = movie.getTitle();
                     }
-                    Toast.makeText(context,title,Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,title,Toast.LENGTH_LONG).show();*/
                 break;
             }
             return false;

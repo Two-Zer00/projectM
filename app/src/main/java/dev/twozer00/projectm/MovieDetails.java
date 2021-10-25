@@ -30,12 +30,15 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import dev.twozer00.projectm.model.Movie;
 import dev.twozer00.projectm.model.Person;
 import dev.twozer00.projectm.model.Trending;
 import dev.twozer00.projectm.model.TvShow;
 import dev.twozer00.projectm.ui.main.MovieDetailsPagerAdapter;
 import dev.twozer00.projectm.ui.main.SectionsPagerAdapter;
+
+import static dev.twozer00.projectm.utils.Constants.BASE_URL_IMG;
 
 public class MovieDetails extends AppCompatActivity {
     private ImageView backdrop;
@@ -48,13 +51,14 @@ public class MovieDetails extends AppCompatActivity {
     protected CollapsingToolbarLayout collapsingToolbarLayout;
     private TextView rateText;
     private TabLayout tabs;
+    private Movie movie = new Movie();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         Log.d("ACTIVITY2", "onCreate: ");
-        final Movie movie = (Movie) getIntent().getSerializableExtra("media");
+        movie = (Movie) getIntent().getSerializableExtra("media");
         backdrop = findViewById(R.id.backdropImage);
         toolbar = findViewById(R.id.toolbar);
         overview = findViewById(R.id.overview);
@@ -70,9 +74,6 @@ public class MovieDetails extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.movieDetailsViewPager);
         viewPager.setAdapter(sectionsPagerAdapter);
         tabs = findViewById(R.id.tabs);
-//        ColorStateList colorStateList = tabs.getBackgroundTintList().;
-//        colorStateList.getColorForState()
-//        tabs.setTabIconTint();
         tabs.setSelectedTabIndicatorColor(getColor(R.color.white));
         tabs.setTabTextColors(getColor(R.color.tabs),getColor(R.color.white));
         tabs.setupWithViewPager(viewPager);
@@ -101,7 +102,7 @@ public class MovieDetails extends AppCompatActivity {
     public void showImage() {
         Log.d("MODAL IMAGE", "showImage: ");
         ImageView imageView = new ImageView(this);
-        imageView.setImageDrawable(poster.getDrawable());
+        Picasso.get().load(Uri.parse((movie.getPoster_path()).replace("/w500/","/original/"))).placeholder(R.drawable.ic_placeholder).into(imageView);
         AlertDialog.Builder buildera = new AlertDialog.Builder(this);
         buildera.setView(imageView);
         Dialog builder = buildera.create();
@@ -117,7 +118,6 @@ public class MovieDetails extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
         builder.show();
     }
-
     private void loadMovie(Movie movie) {
         collapsingToolbarLayout.setTitle(movie.getTitle());
         collapsingToolbarLayout.setExpandedTitleColor(Color.argb(0,1,1,1));
@@ -125,25 +125,33 @@ public class MovieDetails extends AppCompatActivity {
             toolbar.setSubtitle(movie.getOriginal_title());
         }
         Picasso.get().load(Uri.parse(movie.getBackdrop_path())).into(backdrop);
-        Picasso.get().load(Uri.parse(movie.getPoster_path())).error(R.drawable.ic_nocover).into(poster, new Callback() {
+        Target target = new Target() {
             @Override
-            public void onSuccess() {
-                Bitmap bitmap = ((BitmapDrawable)poster.getDrawable()).getBitmap();
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                //Bitmap bitmapA = ((BitmapDrawable)poster.getDrawable()).getBitmap();
+                poster.setImageBitmap(bitmap);
                 int colorDominant = Palette.from(bitmap).generate().getDominantColor(getColor(R.color.purple_200));
                 int colorDark = Palette.from(bitmap).generate().getDarkVibrantColor(getColor(R.color.purple_700));
                 GradientDrawable drawable = new GradientDrawable();
                 TabLayout tabs = findViewById(R.id.tabs);
                 tabs.setBackgroundColor(colorDark);
+                tabs.setTabRippleColor(ColorStateList.valueOf(colorDominant));
                 drawable.setColors(new int[]{Color.argb(0,Color.red(colorDark),Color.green(colorDark),Color.blue(colorDark)),colorDark});
                 collapsingToolbarLayout.setContentScrim(drawable);
                 infoContainer.setBackgroundColor(Color.argb(150,Color.red(colorDominant),Color.green(colorDominant),Color.blue(colorDominant)));
             }
 
             @Override
-            public void onError(Exception e) {
-
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                poster.setImageResource(R.drawable.ic_nocover);
             }
-        });
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                poster.setImageResource(R.drawable.background);
+            }
+        };
+        Picasso.get().load(Uri.parse(movie.getPoster_path())).placeholder(R.drawable.background).into(target);
         if(movie.getOverview().length()>250){
             overview.setText(movie.getOverview().substring(0,movie.getOverview().indexOf(". ")+1));
         }

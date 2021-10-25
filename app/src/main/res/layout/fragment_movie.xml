@@ -1,22 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".MovieFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MovieFragment">
     <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nestedSv"
+        android:scrollbars="vertical"
+        android:scrollbarThumbVertical="@color/purple_500Alpha">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/nestedSv">
-        <RelativeLayout
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Spinner
+                android:layout_width="wrap_content"
+                android:minWidth="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                android:backgroundTintMode="multiply"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:id="@+id/spinner">
+            </Spinner>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            <androidx.recyclerview.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/recycler"/>
-            <ProgressBar
+                <ProgressBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?android:attr/progressBarStyleLarge"
@@ -24,8 +42,10 @@
                     android:layout_gravity="center"
                     android:id="@+id/progressBar"
                     android:layout_centerHorizontal="true"
-                    android:layout_alignBottom="@+id/recycler"
+                    android:layout_alignParentBottom="true"
                     android:indeterminateTint="@color/purple_500"/>
-        </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

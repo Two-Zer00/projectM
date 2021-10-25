@@ -2,25 +2,53 @@
     <string name="app_name">Project M</string>
     <string name="tab_text_1">Popular</string>
     <string name="tab_text_2">Upcoming</string>
-    <string name="movie_details_review">Reviews</string>
+    <string name="details_review">Reviews</string>
+    <string name="details_movies">Movies</string>
+    <string name="details_tv_show">Tv shows</string>
     <string name="movie_details">Movie Details</string>
+    <string name="tv_show_details">Tv show Details</string>
+    <string name="details_credits">Credits</string>
+    <string name="no_more_results">No more results</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string-array name="options">
+        <item>Cast</item>
+        <item>Crew</item>
+    </string-array>
+
+    <!-- DETAILS -->
+
+    <string name="details_relase_date">Release date</string>
+    <string name="details_status">Status</string>
+    <string name="details_budget">Budget</string>
+    <string name="details_revenue">Revenue</string>
+    <string name="details_genres">Genres</string>
+    <string name="details_overview">Overview</string>
+    <string name="details_language">Language</string>
+    <string name="details_duration_measure">hr</string>
+    <string name="details_duration_measure_min">min</string>
+    <string name="details_home_page">Home page</string>
+    <string name="details_duration">Duration</string>
+    <string name="no_reviews">No reviews</string>
+
+    <string name="people_details">Details</string>
+    <string name="people_details_birthday">Birthday</string>
+    <string name="people_details_deathday">Deathday</string>
+    <string name="people_details_place_of_birth">Place of birthday</string>
+    <string name="people_details_homepage">Homepage</string>
+    <string name="people_details_biography">Biography</string>
+
+
+    <string name="details_duration_tv_show">Episode duration</string>
+    <string name="details_number_of_episodes_tv_show">Number of episodes</string>
+    <string name="details_number_of_seasons_tv_show">Number of seasons</string>
+    <string name="details_type_tv_show">Type</string>
+    <string name="details_last_air_date_tv_show">Last air date</string>
+    <string name="name_value">John Doe</string>
+    <string name="department_value">Writter</string>
+    <string name="empty_fields">Not provided</string>
+    <string name="lorem">porttitor massa id neque aliquam vestibulum morbi blandit cursus risus at ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget gravida cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel facilisis volutpat est velit egestas dui id ornare arcu odio ut sem nulla pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit sed vulputate mi sit amet mauris commodo quis imperdiet massa tincidunt nunc **pulvinar** sapien et ligula ullamcorper malesuada proin libero nunc consequat interdum varius sit</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
-    <!-- MOVIE DETAILS -->
-
-    <string name="movie_details_relase_date">Release date</string>
-    <string name="movie_details_status">Status</string>
-    <string name="movie_details_budget">Budget</string>
-    <string name="movie_details_revenue">Revenue</string>
-    <string name="movie_details_production_companies">Production companies</string>
-    <string name="movie_details_genres">Genres</string>
-    <string name="movie_details_overview">Overview</string>
-    <string name="movie_details_language">Language</string>
-    <string name="movie_details_duration_measure">hr</string>
-    <string name="movie_details_home_page">Home page</string>
-    <string name="movie_details_duration">Duration</string>
-    <string name="movie_details_empty_fields">Not provided</string>
-    <string name="lorem">porttitor massa id neque aliquam vestibulum morbi blandit cursus risus at ultrices mi tempus imperdiet nulla malesuada pellentesque elit eget gravida cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel risus commodo viverra maecenas accumsan lacus vel facilisis volutpat est velit egestas dui id ornare arcu odio ut sem nulla pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor elit sed vulputate mi sit amet mauris commodo quis imperdiet massa tincidunt nunc **pulvinar** sapien et ligula ullamcorper malesuada proin libero nunc consequat interdum varius sit</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

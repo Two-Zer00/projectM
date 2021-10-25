@@ -9,7 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="validRate">#6719D6</color>
     <color name="progress">#A971F8</color>
-    <color name="releaseBackground">#663700B3</color>
     <color name="purple_500Alpha">#656200EE</color>
-    <color name="tabs">#774A4A4A</color>
+    <color name="tabs">#95FFFFFF</color>
+
+    <color name="purple_dark">#33007C</color>
 </resources>

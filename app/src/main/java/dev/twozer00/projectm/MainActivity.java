@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabs = binding.tabs;
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = binding.fab;
+        tabs.setSelectedTabIndicatorColor(getColor(R.color.white));
+        tabs.setTabTextColors(getColor(R.color.tabs),getColor(R.color.white));
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

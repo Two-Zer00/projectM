@@ -1,6 +1,7 @@
 package dev.twozer00.projectm.utils;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 public class Utils {

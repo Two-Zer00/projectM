@@ -24,20 +24,20 @@ public class Trending implements Serializable {
     private String media_type;
     private float vote_average;
     private float vote_count;
-    ArrayList< Movie > also_known_as = new ArrayList<>();
+    ArrayList< String > also_known_as = new ArrayList<>();
     private String biography;
     private String birthday;
     private String deathday;
     private float gender;
     private String homepage;
     private String imdb_id;
+    private String known_for_department;
     private String name;
     private String place_of_birth;
     private String profile_path;
     private String first_air_date;
     ArrayList < String > origin_country = new ArrayList<>();
     private String original_name;
-
 
     public Object getMediaObject(){
         Log.d("Trending", "getMediaObject: " + media_type);
@@ -57,7 +57,7 @@ public class Trending implements Serializable {
         return null;
     }
 
-    public Trending(boolean adult, String backdrop_path, ArrayList<Integer> genre_ids, float id, String original_language, String original_title, String overview, float popularity, String poster_path, String release_date, String title, boolean video, String media_type, float vote_average, float vote_count, ArrayList<Movie> also_known_as, String biography, String birthday, String deathday, float gender, String homepage, String imdb_id, String name, String place_of_birth, String profile_path, String first_air_date, ArrayList<String> origin_country, String original_name) {
+    public Trending(boolean adult, String backdrop_path, ArrayList<Integer> genre_ids, float id, String original_language, String original_title, String overview, float popularity, String poster_path, String release_date, String title, boolean video, String media_type, float vote_average, float vote_count, ArrayList<String> also_known_as, String biography, String birthday, String deathday, float gender, String homepage, String imdb_id, String name, String place_of_birth, String profile_path, String first_air_date, ArrayList<String> origin_country, String original_name) {
         this.adult = adult; // all
         this.backdrop_path = backdrop_path; //all
         this.genre_ids = genre_ids; // tv,movies
@@ -208,11 +208,11 @@ public class Trending implements Serializable {
         this.vote_count = vote_count;
     }
 
-    public ArrayList<Movie> getAlso_known_as() {
+    public ArrayList<String> getAlso_known_as() {
         return also_known_as;
     }
 
-    public void setAlso_known_as(ArrayList<Movie> also_known_as) {
+    public void setAlso_known_as(ArrayList<String> also_known_as) {
         this.also_known_as = also_known_as;
     }
 

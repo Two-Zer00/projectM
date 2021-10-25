@@ -6,6 +6,7 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import dev.twozer00.projectm.CombinedFragment;
 import dev.twozer00.projectm.MovieFragment;
 import dev.twozer00.projectm.R;
 
@@ -29,7 +30,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch (position){
             case 0:
-                fragment = new MovieFragment("Popular");
+                fragment = new CombinedFragment();
                 break;
             case 1:
                 fragment = new MovieFragment("Upcoming");

@@ -77,7 +77,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
             }
             else{
-                Picasso.get().load(Uri.parse(BASE_URL_IMG+author_details.getAvatar_path())).into(holder.avatar);
+                Picasso.get().load(Uri.parse((BASE_URL_IMG).replace("/w500","/w185")+author_details.getAvatar_path())).error(R.drawable.ic_placeholder).into(holder.avatar);
             }
         }
         else {
@@ -96,7 +96,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         Date date = Date.from(instant);
         holder.created_date.setText(date.toLocaleString());
 
-        holder.content.setText(review.getContent().isEmpty()?context.getString(R.string.movie_details_empty_fields):review.getContent());
+        holder.content.setText(review.getContent().isEmpty()?context.getString(R.string.empty_fields):review.getContent());
 
         if(author_details.getRating()!= null){
             holder.rate_circle.setProgress(author_details.getRating());

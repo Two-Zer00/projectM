@@ -1,7 +1,12 @@
 package dev.twozer00.projectm.model;
 
+import dev.twozer00.projectm.utils.Constants;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import static dev.twozer00.projectm.utils.Constants.BASE_URL_IMG;
+import static dev.twozer00.projectm.utils.Constants.BASE_URL_IMG_BACKDROP;
 
 public class TvShow implements Serializable {
     private String poster_path;
@@ -41,7 +46,7 @@ public class TvShow implements Serializable {
 // Getter Methods
 
     public String getPoster_path() {
-        return poster_path;
+        return BASE_URL_IMG+poster_path;
     }
 
     public float getPopularity() {
@@ -53,7 +58,7 @@ public class TvShow implements Serializable {
     }
 
     public String getBackdrop_path() {
-        return backdrop_path;
+        return BASE_URL_IMG_BACKDROP +backdrop_path;
     }
 
     public float getVote_average() {

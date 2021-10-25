@@ -7,6 +7,7 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import dev.twozer00.projectm.CreditFragment;
 import dev.twozer00.projectm.MovieDetailsFragment;
 import dev.twozer00.projectm.R;
 import dev.twozer00.projectm.ReviewFragment;
@@ -14,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
     @StringRes
-    private final int[] TAB_TITLES = new int[]{R.string.movie_details,R.string.movie_details_review};
+    private final int[] TAB_TITLES = new int[]{R.string.movie_details,R.string.details_review,R.string.details_credits};
 
     private final Context context;
     private final int movieId;
@@ -40,8 +41,10 @@ public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
                 fragment = new MovieDetailsFragment(movieId);
                 break;
             case 1:
-                fragment = new ReviewFragment(movieId);
+                fragment = new ReviewFragment(movieId,0);
                 break;
+            case 2:
+                fragment = new CreditFragment(movieId,0);
         }
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).

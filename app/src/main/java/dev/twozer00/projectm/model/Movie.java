@@ -7,8 +7,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static dev.twozer00.projectm.utils.Constants.BASE_URL_IMG;
+import static dev.twozer00.projectm.utils.Constants.BASE_URL_IMG_BACKDROP;
+
 public class Movie implements Serializable {
-    private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/original" ;
     private boolean adult;
     private String backdrop_path;
     private ArrayList< Integer > genre_ids = new ArrayList<>();
@@ -53,7 +55,7 @@ public class Movie implements Serializable {
     }
 
     public String getBackdrop_path() {
-        return BASE_URL_IMG+backdrop_path;
+        return BASE_URL_IMG_BACKDROP +backdrop_path;
     }
 
     public void setBackdrop_path(String backdrop_path) {

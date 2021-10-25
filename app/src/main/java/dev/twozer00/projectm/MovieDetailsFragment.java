@@ -3,6 +3,8 @@ package dev.twozer00.projectm;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import dev.twozer00.projectm.api.TheMovieDb;
 import dev.twozer00.projectm.model.Genre;
 import dev.twozer00.projectm.model.MovieDetails;
 import dev.twozer00.projectm.model.MovieResponse;
+import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,7 +51,6 @@ public class MovieDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadDetails(movieId);
     }
 
     private void loadDetails(int movieId) {
@@ -79,8 +81,8 @@ public class MovieDetailsFragment extends Fragment {
         releaseDate.setText(movieDetails.getRelease_date());
         status.setText(movieDetails.getStatus());
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        budget.setText(movieDetails.getBudget()>0?formatter.format(movieDetails.getBudget()):getString(R.string.movie_details_empty_fields)); // check if value is > 0, if not, shows "Not provided" avoiding shows 0 as revenue/budget
-        revenue.setText(movieDetails.getRevenue()>0?formatter.format(movieDetails.getRevenue()):getString(R.string.movie_details_empty_fields)); // check if value is > 0, if not, shows "Not provided" avoiding shows 0 as revenue/budget
+        budget.setText(movieDetails.getBudget()>0?formatter.format(movieDetails.getBudget()):getString(R.string.empty_fields)); // check if value is > 0, if not, shows "Not provided" avoiding shows 0 as revenue/budget
+        revenue.setText(movieDetails.getRevenue()>0?formatter.format(movieDetails.getRevenue()):getString(R.string.empty_fields)); // check if value is > 0, if not, shows "Not provided" avoiding shows 0 as revenue/budget
         Iterator<Genre> genresObject = movieDetails.getGenres().iterator();
         List<String> genresN = new ArrayList<>();
         while(genresObject.hasNext()){
@@ -91,11 +93,11 @@ public class MovieDetailsFragment extends Fragment {
         Date date = new Date(timeInMilliSeconds);
         SimpleDateFormat sdf = new SimpleDateFormat("H.mm");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        duration.setText(movieDetails.getRuntime()!=0?sdf.format(date)+" "+ getString(R.string.movie_details_duration_measure) :getString(R.string.movie_details_empty_fields));
+        duration.setText(movieDetails.getRuntime()!=0?sdf.format(date)+" "+ getString(R.string.details_duration_measure) :getString(R.string.empty_fields));
         genres.setText(genresN.toString().replaceAll("[\\[\\]]",""));
-        detailed_overview.setText(movieDetails.getOverview()!=null?movieDetails.getOverview():getString(R.string.movie_details_empty_fields));
+        detailed_overview.setText(movieDetails.getOverview()!=null?movieDetails.getOverview():getString(R.string.empty_fields));
         language.setText(movieDetails.getOriginal_language());
-        home_page.setText(movieDetails.getHomepage()!=null?movieDetails.getHomepage():getString(R.string.movie_details_empty_fields)); // checking if the fields comes empty if so, show "Not provided" string resource
+        home_page.setText(movieDetails.getHomepage()!=null?movieDetails.getHomepage():getString(R.string.empty_fields)); // checking if the fields comes empty if so, show "Not provided" string resource
     }
 
     @Override
@@ -112,6 +114,13 @@ public class MovieDetailsFragment extends Fragment {
         language = view.findViewById(R.id.language);
         duration = view.findViewById(R.id.duration);
         home_page = view.findViewById(R.id.home_page);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                loadDetails(movieId);
+            }
+        }).start();
         return view;
     }
+
 }
