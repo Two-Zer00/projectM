@@ -3,6 +3,7 @@ package dev.twozer00.projectm;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +41,10 @@ public class TvShowDetailsFragment extends Fragment {
     private TextView status;
     private TextView genres;
     private TextView type;
+
+    private TextView title;
+    private TextView oTitle;
+
     private TextView detailed_overview;
     private TextView language;
     private TextView home_page;
@@ -79,22 +84,29 @@ public class TvShowDetailsFragment extends Fragment {
 
     public void bindData(TvShowDetails tvShowDetails){
         Log.d(TAG, "bindData: " + tvShowDetails.toString() );
-        releaseDate.setText(tvShowDetails.getFirst_air_date());
-        status.setText(tvShowDetails.getStatus());
+        title.setText(tvShowDetails.getName());
+        oTitle.setText(tvShowDetails.getOriginal_name());
+        if(tvShowDetails.getOriginal_language().equals(Locale.getDefault().getLanguage())){
+            TableRow temp = (TableRow) oTitle.getParent();
+            temp.setVisibility(View.GONE);
+        }
+        releaseDate.setText(tvShowDetails.getFirst_air_date()!=null?tvShowDetails.getFirst_air_date():getString(R.string.empty_fields));
+        status.setText(!tvShowDetails.getStatus().isEmpty()?tvShowDetails.getStatus():getString(R.string.empty_fields));
         Iterator<Genre> genresObject = tvShowDetails.getGenres().iterator();
         List<String> genresN = new ArrayList<>();
         while(genresObject.hasNext()){
             genresN.add(genresObject.next().getName());
         }
-        language.setText(tvShowDetails.getOriginal_language());
-        home_page.setText(tvShowDetails.getHomepage());
-        lastAirDate.setText(tvShowDetails.getLast_air_date());
-        episodesNumber.setText(String.valueOf(tvShowDetails.getNumber_of_episodes()));
-        seasonNumber.setText(String.valueOf(tvShowDetails.getNumber_of_seasons()));
-        detailed_overview.setText(tvShowDetails.getOverview());
-        type.setText(tvShowDetails.getType());
-        duration.setText(tvShowDetails.getEpisode_run_time().get(tvShowDetails.getEpisode_run_time().size()-1)!=0?tvShowDetails.getEpisode_run_time().get(tvShowDetails.getEpisode_run_time().size()-1)+" "+ getString(R.string.details_duration_measure_min) :getString(R.string.empty_fields));
-        genres.setText(genresN.toString().replaceAll("[\\[\\]]",""));
+        //String.format("%.0f",);
+        language.setText(!tvShowDetails.getOriginal_language().isEmpty()?tvShowDetails.getOriginal_language():getString(R.string.empty_fields));
+        home_page.setText(!tvShowDetails.getHomepage().isEmpty()?tvShowDetails.getHomepage():getString(R.string.empty_fields));
+        lastAirDate.setText(tvShowDetails.getLast_air_date()!=null?tvShowDetails.getLast_air_date():getString(R.string.empty_fields));
+        episodesNumber.setText(String.format("%.0f", tvShowDetails.getNumber_of_episodes()));
+        seasonNumber.setText(String.format("%.0f",tvShowDetails.getNumber_of_seasons()));
+        detailed_overview.setText(!tvShowDetails.getOverview().isEmpty()?tvShowDetails.getOverview():getString(R.string.empty_fields));
+        type.setText(!tvShowDetails.getType().isEmpty()?tvShowDetails.getType():getString(R.string.empty_fields));
+        duration.setText(tvShowDetails.getEpisode_run_time().size()>1&&tvShowDetails.getEpisode_run_time().get(tvShowDetails.getEpisode_run_time().size()-1)!=0?tvShowDetails.getEpisode_run_time().get(tvShowDetails.getEpisode_run_time().size()-1)+" "+ getString(R.string.details_duration_measure_min) :getString(R.string.empty_fields));
+        genres.setText(tvShowDetails.getGenres().size()>1?genresN.toString().replaceAll("[\\[\\]]",""):getString(R.string.empty_fields));
     }
 
     @Override
@@ -112,6 +124,8 @@ public class TvShowDetailsFragment extends Fragment {
         lastAirDate = view.findViewById(R.id.last_air_date);
         episodesNumber= view.findViewById(R.id.episodes_number);
         seasonNumber = view.findViewById(R.id.seasons_number);
+        title = view.findViewById(R.id.title);
+        oTitle = view.findViewById(R.id.Otitle);
         type = view.findViewById(R.id.type);
         return view;
     }

@@ -10,6 +10,9 @@ public interface TheMovieDb {
     @GET("movie/popular")
     Call<MovieResponse> getPopular(@Query("api_key") String api_key, @Query("page") Integer page);
 
+    @GET("search/multi")
+    Call<ResponseSearch> getSearch(@Query("api_key") String api_key,@Query("query") String query, @Query("page") Integer page);
+
     @GET("person/{person_id}/movie_credits")
     Call<MovieCredits> getMovieCreditsPerson(@Path("person_id") Integer person_id,@Query("api_key") String api_key);
 

@@ -76,11 +76,40 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MovieAdapter.ViewHolder holder, int position) {
         movie = dataset.get(position);
+        boolean toRelease = false;
         holder.title.setText(movie.getTitle());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+        Date convertedDate = new Date();
+        try {
+            //System.out.println(movie.getRelease_date());
+            if (movie.getRelease_date() != null) {
+                Objects.requireNonNull(movie.getRelease_date());
+                convertedDate = dateFormat.parse(movie.getRelease_date());
+            }
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        DateFormat Date = DateFormat.getDateInstance();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(convertedDate);
+        Log.d("TIME", "onBindViewHolder: " + System.currentTimeMillis() + " " + convertedDate.getTime() );
+        if(convertedDate.getTime()>System.currentTimeMillis()){
+            holder.releaseDate.setText(Date.format(convertedDate));
+            holder.releaseDate.setVisibility(View.VISIBLE);
+            toRelease = true;
+        }
+        boolean finalToRelease = toRelease;
         Picasso.get().load(movie.getPoster_path()).into(holder.Poster, new Callback() {
             @Override
             public void onSuccess() {
-
+                if(finalToRelease){
+                    Bitmap bitmap = ((BitmapDrawable)holder.Poster.getDrawable()).getBitmap();
+                    int color = Palette.from(bitmap).generate().getDarkVibrantColor(context.getColor(R.color.purple_500));
+                    GradientDrawable drawable = new GradientDrawable();
+                    drawable.setColors(new int[]{Color.argb(0,1,1,1),color});
+                    holder.linearLayout.setBackground(drawable);
+                }
             }
 
             @Override
@@ -96,8 +125,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 holder.ratingBar.getProgressDrawable().setColorFilter(context.getColor(R.color.validRate), android.graphics.PorterDuff.Mode.SRC_IN);
             }
             holder.ratingBar.setProgress((int) (movie.getVote_average()*10),false);
-            holder.Rate.setText(String.valueOf(movie.getVote_average()));
+            holder.Rate.setText(String.valueOf(movie.getVote_average()).replace(".0",""));
         }
+
+
+
+
+
 //        if(query.equals("Upcoming")){
 //            holder.Poster.setTransitionName("poster");
 //        }

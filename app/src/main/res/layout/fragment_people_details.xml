@@ -17,6 +17,28 @@
                 android:layout_height="match_parent">
                 <TableRow android:layout_width="1dp">
                     <TextView
+                        android:text="@string/name"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:padding="3dip"
+                        android:textAlignment="textEnd"
+                        android:text="@string/name_value"
+                        android:id="@+id/name"/>
+                </TableRow>
+                <TableRow android:layout_width="1dp">
+                    <TextView
+                        android:text="@string/department"
+                        android:padding="3dip"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:padding="3dip"
+                        android:textAlignment="textEnd"
+                        android:text="@string/department_value"
+                        android:id="@+id/department"/>
+                </TableRow>
+                <TableRow android:layout_width="1dp">
+                    <TextView
                         android:text="@string/people_details_birthday"
                         android:padding="3dip"/>
                     <TextView

@@ -39,6 +39,8 @@ public class PeopleDetailsFragment extends Fragment {
     private TextView place_of_birth;
     private TableRow place_of_birth_container;
     private TextView homepage;
+    private TextView name;
+    private TextView department;
     private TableRow homepage_container;
     private TextView biography;
     private Person person;
@@ -67,6 +69,8 @@ public class PeopleDetailsFragment extends Fragment {
         homepage_container = view.findViewById(R.id.homepage_container);
         place_of_birth_container = view.findViewById(R.id.place_of_birth_container);
         deathday_container = view.findViewById(R.id.deathday_container);
+        name = view.findViewById(R.id.name);
+        department = view.findViewById(R.id.department);
         loadDetails(person_id);
         return view;
     }
@@ -95,14 +99,18 @@ public class PeopleDetailsFragment extends Fragment {
     }
 
     private void bindData(Person person) {
+        name.setText(person.getName());
+        if(person.getKnown_for_department()!=null){
+            department.setText(person.getKnown_for_department());
+        }
         if(person.getBirthday()!=null){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
             Period period = Period.between(LocalDate.now(), LocalDate.parse(person.getBirthday(),formatter));
             int years = Math.abs(period.getYears());
             String birthDay = person.getBirthday();
             TextView textView = getActivity().findViewById(R.id.age);
-            textView.setText(String.valueOf(years));
-            birthday.setText(birthDay);
+            //textView.setText(String.valueOf(years));
+            birthday.setText(String.format("%s(%s)", person.getBirthday(), years));
         }
         else{
             ((TableRow)birthday.getParent()).setVisibility(View.GONE);
@@ -123,7 +131,7 @@ public class PeopleDetailsFragment extends Fragment {
             biography.setText(person.getBiography());
         }
         else{
-            birthday.setText(R.string.empty_fields);
+            biography.setText(R.string.empty_fields);
         }
         if (person.getHomepage()!=null){
             homepage.setText(person.getHomepage());

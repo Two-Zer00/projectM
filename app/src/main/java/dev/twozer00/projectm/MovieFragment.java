@@ -21,7 +21,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static dev.twozer00.projectm.utils.Utils.dpToPx;
 
@@ -120,6 +123,30 @@ public class MovieFragment extends Fragment {
                         Log.d("Retrofit valid response",response.body().toString());
                         responseMovie = response.body();
                         page = responseMovie.getPage() + 1;
+//                        responseMovie.getResults().removeIf(movie -> {
+//                            //String releaseDate = movie.getRelease_date();
+//                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+//                            Date convertedDate = new Date();
+//                            try {
+//                                if (movie.getRelease_date() != null) {
+//                                    Objects.requireNonNull(movie.getRelease_date());
+//                                    convertedDate = dateFormat.parse(movie.getRelease_date());
+//                                }
+//                            } catch (ParseException e) {
+//                                // TODO Auto-generated catch block
+//                                e.printStackTrace();
+//                            }
+//                            DateFormat Date = DateFormat.getDateInstance();
+//                            Calendar cal = Calendar.getInstance();
+//                            cal.setTime(convertedDate);
+//                            //Log.d("TIME", "onBindViewHolder: " + System.currentTimeMillis() + " " + convertedDate.getTime() );
+//                            if(convertedDate.getTime()>System.currentTimeMillis()){
+//                                return false;
+//                            }
+//                            else{
+//                                return true;
+//                            }
+//                        });
                         movieAdapter.addElemList((ArrayList<Movie>) responseMovie.getResults());
                         isLoading = false;
                         ObjectAnimator animation = ObjectAnimator.ofFloat(progressBar, "translationY", dpToPx(10,view.getContext()));

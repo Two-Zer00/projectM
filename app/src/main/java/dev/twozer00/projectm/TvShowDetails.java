@@ -19,6 +19,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
 import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -47,6 +49,18 @@ public class TvShowDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv_show_details);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        //WindowCompat.setDecorFitsSystemWindows(this.getWindow(), false);
+        Window window = this.getWindow();
+
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(this, android.R.color.transparent));
         Log.d(TAG, "onCreate: ");
         tvShow= (TvShow) getIntent().getSerializableExtra("media");
         backdrop = findViewById(R.id.backdropImage);
@@ -60,6 +74,7 @@ public class TvShowDetails extends AppCompatActivity {
         rateText = findViewById(R.id.rate);
         collapsingToolbarLayout = findViewById(R.id.barTitle);
         toolbar = findViewById(R.id.toolbar);
+        //getWindow().setStatusBarColor(getResources().getColor(R.color.transparent));
         TvShowDetailsPagerAdapter sectionsPagerAdapter = new TvShowDetailsPagerAdapter(getSupportFragmentManager(), this ,(int)tvShow.getId());
         ViewPager viewPager = findViewById(R.id.movieDetailsViewPager);
         viewPager.setOffscreenPageLimit(1);
@@ -82,23 +97,25 @@ public class TvShowDetails extends AppCompatActivity {
     }
     private void loadTvShow(TvShow tvShow) {
         collapsingToolbarLayout.setTitle(tvShow.getName());
-        collapsingToolbarLayout.setExpandedTitleColor(Color.argb(0,1,1,1));
         if(tvShow.getOriginal_name()!=null){
             toolbar.setSubtitle(tvShow.getOriginal_name());
         }
-        Picasso.get().load(Uri.parse(tvShow.getBackdrop_path())).into(backdrop);
-        Picasso.get().load(Uri.parse(tvShow.getPoster_path())).error(R.drawable.ic_nocover).into(poster, new Callback() {
+        Picasso.get().load(Uri.parse(tvShow.getBackdrop_path())).into(backdrop, new Callback() {
             @Override
             public void onSuccess() {
-                Bitmap bitmap = ((BitmapDrawable)poster.getDrawable()).getBitmap();
+                Bitmap bitmap = ((BitmapDrawable)backdrop.getDrawable()).getBitmap();
                 int colorDominant = Palette.from(bitmap).generate().getDominantColor(getColor(R.color.purple_200));
                 int colorDark = Palette.from(bitmap).generate().getDarkVibrantColor(getColor(R.color.purple_700));
+                if(colorDark==getColor(R.color.purple_700)){
+                    colorDark =Palette.from(bitmap).generate().getDarkMutedColor(getColor(R.color.purple_700));
+                }
                 GradientDrawable drawable = new GradientDrawable();
                 TabLayout tabs = findViewById(R.id.tabs);
                 tabs.setBackgroundColor(colorDark);
                 drawable.setColors(new int[]{Color.argb(0,Color.red(colorDark),Color.green(colorDark),Color.blue(colorDark)),colorDark});
                 collapsingToolbarLayout.setContentScrim(drawable);
-                infoContainer.setBackgroundColor(Color.argb(150,Color.red(colorDominant),Color.green(colorDominant),Color.blue(colorDominant)));
+                //collapsingToolbarLayout.setStatusBarScrimColor(getResources().getColor(R.color.transparent));
+                //infoContainer.setBackgroundColor(Color.argb(150,Color.red(colorDominant),Color.green(colorDominant),Color.blue(colorDominant)));
             }
 
             @Override
@@ -106,6 +123,7 @@ public class TvShowDetails extends AppCompatActivity {
 
             }
         });
+        Picasso.get().load(Uri.parse(tvShow.getPoster_path())).error(R.drawable.ic_nocover).into(poster);
         if(tvShow.getOverview().length()>250){
             overview.setText(tvShow.getOverview().substring(0,tvShow.getOverview().indexOf(". ")+1));
         }
@@ -130,10 +148,18 @@ public class TvShowDetails extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finishAfterTransition();
+                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+    }
+
     public void showImage() {
         Log.d("MODAL IMAGE", "showImage: ");
         ImageView imageView = new ImageView(this);

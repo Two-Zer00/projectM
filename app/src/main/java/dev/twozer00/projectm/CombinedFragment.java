@@ -49,7 +49,7 @@ public class CombinedFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler);
         nestedScrollView = view.findViewById(R.id.nestedSv);
         progressBar = view.findViewById(R.id.progressBar);
-        combinedAdapter = new CombinedAdapter(getContext());
+        combinedAdapter = new CombinedAdapter(getContext(),getActivity());
         gridLayoutManager = new GridLayoutManager(getContext(),3);
         recyclerView.setAdapter(combinedAdapter);
         recyclerView.setLayoutManager(gridLayoutManager);

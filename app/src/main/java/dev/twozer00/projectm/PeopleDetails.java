@@ -24,7 +24,6 @@ public class PeopleDetails extends AppCompatActivity {
     private PersonCredit person;
     private ImageView profile_poster;
     private TextView name;
-    private TextView department;
     private TextView birthday;
     private TextView deathday;
     private TextView place_of_birth;
@@ -40,7 +39,7 @@ public class PeopleDetails extends AppCompatActivity {
         person = (PersonCredit) getIntent().getSerializableExtra("media");
         Log.d("PEOPLE DETAILS", "onCreate: "+person.toString());
         name = findViewById(R.id.name);
-        department = findViewById(R.id.department);
+        //department = findViewById(R.id.department);
         profile_poster = findViewById(R.id.profile_poster);
         collapsingToolbarLayout = findViewById(R.id.barTitle);
         toolbar = findViewById(R.id.toolbar);
@@ -49,7 +48,7 @@ public class PeopleDetails extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(sectionsPagerAdapter);
         tabs = findViewById(R.id.tabs);
-        collapsingToolbarLayout.setExpandedTitleColor(Color.argb(0,1,1,1));
+        //collapsingToolbarLayout.setExpandedTitleColor(Color.argb(0,1,1,1));
         tabs.setSelectedTabIndicatorColor(getColor(R.color.white));
         tabs.setTabTextColors(getColor(R.color.tabs),getColor(R.color.white));
         tabs.setupWithViewPager(viewPager);
@@ -63,15 +62,23 @@ public class PeopleDetails extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finishAfterTransition();
+                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+    }
+
     private void bindData(PersonCredit person) {
-        name.setText(person.getName());
+        //name.setText(person.getName());
         setTitle(person.getName());
-        department.setText(person.getKnown_for_department());
+        //department.setText(person.getKnown_for_department());
         Picasso.get().load(person.getProfile_path()).into(profile_poster);
     }
 }

@@ -13,6 +13,9 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.text.LineBreaker;
 import android.net.Uri;
+import android.transition.Explode;
+import android.transition.Slide;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -22,6 +25,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
@@ -37,6 +46,8 @@ import dev.twozer00.projectm.model.Trending;
 import dev.twozer00.projectm.model.TvShow;
 import dev.twozer00.projectm.ui.main.MovieDetailsPagerAdapter;
 import dev.twozer00.projectm.ui.main.SectionsPagerAdapter;
+import android.view.WindowManager.LayoutParams;
+import android.view.Window;
 
 import static dev.twozer00.projectm.utils.Constants.BASE_URL_IMG;
 
@@ -46,12 +57,44 @@ public class MovieDetails extends AppCompatActivity {
     private TextView overview;
     private Toolbar toolbar;
     private LinearLayout infoContainer;
+    private LinearLayout bottom;
     private ProgressBar ratingBar;
     private RelativeLayout rateContainer;
     protected CollapsingToolbarLayout collapsingToolbarLayout;
     private TextView rateText;
     private TabLayout tabs;
     private Movie movie = new Movie();
+    Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            //poster.setImageBitmap(bitmap);
+            backdrop.setImageBitmap(bitmap);
+            int colorDominant = Palette.from(bitmap).generate().getDominantColor(getColor(R.color.purple_200));
+            int colorDark = Palette.from(bitmap).generate().getDarkVibrantColor(getColor(R.color.purple_700));
+            if(colorDark==getColor(R.color.purple_700)){
+                colorDark =Palette.from(bitmap).generate().getDarkMutedColor(getColor(R.color.purple_700));
+            }
+            GradientDrawable drawable = new GradientDrawable();
+            TabLayout tabs = findViewById(R.id.tabs);
+            tabs.setBackgroundColor(colorDark);
+            tabs.setTabRippleColor(ColorStateList.valueOf(colorDominant));
+            drawable.setColors(new int[]{Color.argb(0,Color.red(colorDark),Color.green(colorDark),Color.blue(colorDark)),colorDark});
+            collapsingToolbarLayout.setContentScrim(drawable);
+            //bottom.back(new int[]{Color.argb(0,Color.red(colorDark),Color.green(colorDark),Color.blue(colorDark)),colorDark});
+            //bottom.setBackground(drawable);
+            //infoContainer.setBackgroundColor(Color.argb(150,Color.red(colorDominant),Color.green(colorDominant),Color.blue(colorDominant)));
+        }
+
+        @Override
+        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+            poster.setImageResource(R.drawable.ic_nocover);
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+            poster.setImageResource(R.drawable.background);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +108,32 @@ public class MovieDetails extends AppCompatActivity {
         rateContainer = findViewById(R.id.rateContainer);
         poster = findViewById(R.id.poster);
         ratingBar = findViewById(R.id.ratingBar);
+        bottom = findViewById(R.id.bottomColor);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
+
+        /*
+        To enable window content transitions in your code instead, call the Window.requestFeature() method:
+         */
+
+        /*
+        If you have set an enter transition for the second activity,
+        the transition is also activated when the activity starts.
+         */
+        //WindowCompat.setDecorFitsSystemWindows(this.getWindow(), false);
+        Window window = this.getWindow();
+
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(this, android.R.color.transparent));
+        //window.setStatusBarContrastEnforced(true);
+        //window.setNavigationBarColor(this.getResources().getColor(android.R.color.transparent));
+
 
         infoContainer = findViewById(R.id.infoContainer);
         rateText = findViewById(R.id.rate);
@@ -91,10 +160,18 @@ public class MovieDetails extends AppCompatActivity {
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finishAfterTransition();
+                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -120,38 +197,36 @@ public class MovieDetails extends AppCompatActivity {
     }
     private void loadMovie(Movie movie) {
         collapsingToolbarLayout.setTitle(movie.getTitle());
-        collapsingToolbarLayout.setExpandedTitleColor(Color.argb(0,1,1,1));
         if(movie.getOriginal_title()!=null){
             toolbar.setSubtitle(movie.getOriginal_title());
         }
-        Picasso.get().load(Uri.parse(movie.getBackdrop_path())).into(backdrop);
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                //Bitmap bitmapA = ((BitmapDrawable)poster.getDrawable()).getBitmap();
-                poster.setImageBitmap(bitmap);
-                int colorDominant = Palette.from(bitmap).generate().getDominantColor(getColor(R.color.purple_200));
-                int colorDark = Palette.from(bitmap).generate().getDarkVibrantColor(getColor(R.color.purple_700));
-                GradientDrawable drawable = new GradientDrawable();
-                TabLayout tabs = findViewById(R.id.tabs);
-                tabs.setBackgroundColor(colorDark);
-                tabs.setTabRippleColor(ColorStateList.valueOf(colorDominant));
-                drawable.setColors(new int[]{Color.argb(0,Color.red(colorDark),Color.green(colorDark),Color.blue(colorDark)),colorDark});
-                collapsingToolbarLayout.setContentScrim(drawable);
-                infoContainer.setBackgroundColor(Color.argb(150,Color.red(colorDominant),Color.green(colorDominant),Color.blue(colorDominant)));
-            }
+        if(movie.getBackdrop_path().contains("null")){
+            Picasso.get().load(Uri.parse(movie.getPoster_path())).into(target);
+        }
+        else{
+            Picasso.get().load(Uri.parse(movie.getBackdrop_path())).into(target);
+        }
+        //Log.d("IMAGE POSTER", "loadMovie: "+Uri.parse(movie.getPoster_path()));
+        //Picasso.get().load(Uri.parse(movie.getBackdrop_path())).into(target);
+        Picasso.get().load(Uri.parse(movie.getPoster_path())).placeholder(R.drawable.background).into(poster);
+        //WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content).getRootView(), (v, windowInsets) -> {
+//            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            // Apply the insets as a margin to the view. Here the system is setting
+//            // only the bottom, left, and right dimensions, but apply whichever insets are
+//            // appropriate to your layout. You can also update the view padding
+//            // if that's more appropriate.
+//            android.view.WindowManager.LayoutParams.MarginLayoutParams mlp = (MarginLayoutParams) v.getLayoutParams();
+//            mlp.leftMargin = insets.left;
+//            mlp.bottomMargin = insets.bottom;
+//            mlp.rightMargin = insets.right;
+//            v.setLayoutParams(mlp);
+//
+//            // Return CONSUMED if you don't want want the window insets to keep being
+//            // passed down to descendant views.
+//            return WindowInsetsCompat.CONSUMED;
+//        });
 
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                poster.setImageResource(R.drawable.ic_nocover);
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                poster.setImageResource(R.drawable.background);
-            }
-        };
-        Picasso.get().load(Uri.parse(movie.getPoster_path())).placeholder(R.drawable.background).into(target);
         if(movie.getOverview().length()>250){
             overview.setText(movie.getOverview().substring(0,movie.getOverview().indexOf(". ")+1));
         }
@@ -164,7 +239,7 @@ public class MovieDetails extends AppCompatActivity {
                 ratingBar.getProgressDrawable().setColorFilter(getColor(R.color.validRate), android.graphics.PorterDuff.Mode.SRC_IN);
             }
             ratingBar.setProgress((int) (movie.getVote_average()*10),true);
-            rateText.setText(String.valueOf(movie.getVote_average()));
+            rateText.setText(String.valueOf(movie.getVote_average()).replace(".0",""));
         }
         else{
             rateContainer.setTransitionName("");

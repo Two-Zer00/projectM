@@ -9,25 +9,22 @@
     <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             android:id="@+id/appBar">
         <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
                 app:expandedTitleTextAppearance="@style/AudioFileInfoOverlayText"
                 app:collapsedTitleTextAppearance="@style/AudioFileInfoOverlayText"
                 android:id="@+id/barTitle">
             <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="280dp"
+                    android:layout_height="400dp"
                     app:layout_collapseMode="parallax">
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_backdrop"
+                        android:background="@drawable/gradient_background"
                         android:scaleType="centerCrop"
                         android:id="@+id/backdropImage"
                         android:transitionName="backdrop"/>
@@ -35,59 +32,31 @@
                         android:layout_width="match_parent"
                         android:id="@+id/infoContainer"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_500Alpha">
+                        android:orientation="horizontal">
                     <RelativeLayout
-                            android:layout_width="150dp"
+                            android:layout_width="match_parent"
                             android:paddingStart="10dp"
                             android:layout_height="match_parent"
-                            android:id="@+id/posterContainer">
-
+                            android:id="@+id/posterContainer"
+                            android:visibility="invisible">
                         <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_centerVertical="true"
-                                android:layout_height="200dp"
+                                android:layout_width="200dp"
+                            android:minHeight="200dp"
+                            android:layout_marginVertical="27dp"
+                            android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:src="@drawable/background"
+                            android:layout_centerVertical="true"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/ic_poster"
                                 android:id="@+id/poster"
                                 android:transitionName="poster"/>
-                        <RelativeLayout
-                                android:id="@+id/rateContainer"
-                                android:layout_width="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_height="wrap_content"
-                                android:layout_alignTop="@id/poster"
-                                android:layout_alignEnd="@id/poster"
-                                android:layout_marginTop="5dp"
-                                android:visibility="gone"
-                                android:transitionName="rating_container"
-                                android:layout_marginEnd="5dp">
-                            <ProgressBar
-                                    android:id="@+id/ratingBar"
-                                    android:layout_width="45dp"
-                                    android:layout_height="45dp"
-                                    android:indeterminate="false"
-                                    android:progressDrawable="@drawable/circular_progress_bar"
-                                    android:background="@drawable/circle_shape"
-                                    style="?android:attr/progressBarStyleHorizontal"
-                                    android:max="100"
-                                    android:progress="25" />
-                            <TextView android:layout_width="wrap_content"
-                                      android:layout_height="wrap_content"
-                                      android:text="2.5"
-                                      android:textSize="20sp"
-                                      android:textStyle="bold"
-                                      android:textColor="@color/white"
-                                      android:id="@+id/rate"
-                                      android:autoSizeTextType="uniform"
-                                      android:layout_centerHorizontal="true"
-                                      android:layout_centerVertical="true"
-                                      android:theme="@style/AudioFileInfoOverlayText"/>
-                        </RelativeLayout>
+
                     </RelativeLayout>
                     <TextView
                             android:layout_gravity="center"
                             android:id="@+id/overview"
                             android:scrollbars="vertical"
+                            android:visibility="gone"
                             android:textSize="20sp"
                             android:translationZ="20dp"
                             android:paddingVertical="20dp"
@@ -98,11 +67,61 @@
                             android:textAppearance="@style/AudioFileInfoOverlayText"
                             android:text="@string/app_name"/>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@drawable/gradient"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:id="@+id/bottomColor"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/gradientdown"
+                    android:orientation="vertical" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                app:layout_collapseMode="pin">
+                <RelativeLayout
+                    android:id="@+id/rateContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="visible"
+                    android:transitionName="rating_container">
+                    <ProgressBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:indeterminate="false"
+                        android:progressDrawable="@drawable/circular_progress_bar"
+                        android:background="@drawable/circle_shape"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:max="100"
+                        android:progress="25" />
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2.5"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:id="@+id/rate"
+                        android:autoSizeTextType="uniform"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:theme="@style/AudioFileInfoOverlayText"/>
+                </RelativeLayout>
             </RelativeLayout>
             <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
+                    android:layout_marginTop="20dp"
                     android:theme="@style/AudioFileInfoOverlayText"
                     android:id="@+id/toolbar"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>

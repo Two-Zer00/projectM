@@ -115,10 +115,10 @@ public class CreditAdapter extends RecyclerView.Adapter<CreditAdapter.ViewHolder
                 case "crew":
                     crew = (Crew) dataset.get(getAdapterPosition());
                     personCredit  = new PersonCredit();
-                    personCredit.setId(cast.getId());
-                    personCredit.setName(cast.getName());
-                    personCredit.setProfile_path(cast.getProfile_path());
-                    personCredit.setKnown_for_department(cast.getKnown_for_department());
+                    personCredit.setId(crew.getId());
+                    personCredit.setName(crew.getName());
+                    personCredit.setProfile_path(crew.getProfile_path());
+                    personCredit.setKnown_for_department(crew.getKnown_for_department());
                     if (v.getId() == R.id.item) {
                         Intent i = new Intent(v.getContext(), PeopleDetails.class);
                         i.putExtra("media", personCredit);

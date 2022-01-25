@@ -13,17 +13,22 @@
         android:theme="@style/Theme.ProjectM.NoActionBar">
         <activity android:name=".PeopleDetails" />
         <activity android:name=".TvShowDetails" />
+        <activity android:name=".SearchActivity" android:theme="@style/Theme.ProjectM"/>
         <activity android:name=".MovieDetails" /> <!-- <activity android:name=".DetailsActivity"> -->
         <!-- </activity> -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.ProjectM.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
     </application>
 

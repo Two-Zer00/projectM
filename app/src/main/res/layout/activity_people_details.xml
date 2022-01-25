@@ -23,34 +23,17 @@
             android:id="@+id/barTitle">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:minHeight="300dp"
+                android:minHeight="400dp"
                 android:layout_height="wrap_content"
                 app:layout_collapseMode="parallax">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_margin="10dp"
+                    android:visibility="gone"
                     android:id="@+id/infoContainer"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_centerVertical="true">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:id="@+id/posterContainer">
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:layout_width="wrap_content"
-                            android:minWidth="100dp"
-                            android:scaleType="centerCrop"
-                            app:civ_border_width="4dp"
-                            app:civ_border_color="@color/white"
-                            android:layout_centerVertical="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_profile"
-                            android:id="@+id/profile_poster"
-                            android:transitionName="poster"/>
-                    </RelativeLayout>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -82,6 +65,14 @@
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
+            <ImageView
+                app:layout_collapseMode="parallax"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_background"
+                android:id="@+id/profile_poster"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerCrop"/>
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"

@@ -2,6 +2,7 @@ package dev.twozer00.projectm;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TableRow;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +43,8 @@ public class MovieDetailsFragment extends Fragment {
     private TextView language;
     private TextView home_page;
     private TextView duration;
+    private TextView title;
+    private TextView oTitle;
 
 
     public MovieDetailsFragment(int movieId) {
@@ -78,6 +81,13 @@ public class MovieDetailsFragment extends Fragment {
 
     private void bindData(MovieDetails movieDetails) {
         Log.d("TAG", "bindData: " + movieDetails.toString());
+        title.setText(movieDetails.getTitle());
+        oTitle.setText(movieDetails.getOriginal_title());
+        if(movieDetails.getOriginal_language().equals(Locale.getDefault().getLanguage())){
+            TableRow temp = (TableRow) oTitle.getParent();
+            temp.setVisibility(View.GONE);
+        }
+
         releaseDate.setText(movieDetails.getRelease_date());
         status.setText(movieDetails.getStatus());
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
@@ -113,6 +123,8 @@ public class MovieDetailsFragment extends Fragment {
         detailed_overview = view.findViewById(R.id.detailed_overview);
         language = view.findViewById(R.id.language);
         duration = view.findViewById(R.id.duration);
+        title = view.findViewById(R.id.title);
+        oTitle = view.findViewById(R.id.Otitle);
         home_page = view.findViewById(R.id.home_page);
         new Thread(new Runnable() {
             @Override

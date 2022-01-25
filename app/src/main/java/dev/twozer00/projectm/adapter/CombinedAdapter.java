@@ -1,5 +1,6 @@
 package dev.twozer00.projectm.adapter;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
@@ -35,10 +36,12 @@ public class CombinedAdapter extends RecyclerView.Adapter<CombinedAdapter.ViewHo
     private Context context;
     private String media_type;
     private Combined combined;
+    private Activity activity;
 
-    public CombinedAdapter(Context context) {
+    public CombinedAdapter(Context context, Activity activity) {
         this.dataset = new ArrayList<>();
         this.context = context;
+        this.activity = (Activity) activity;
     }
 
     @NonNull
@@ -67,6 +70,7 @@ public class CombinedAdapter extends RecyclerView.Adapter<CombinedAdapter.ViewHo
                //holder.title.setText(combined.getTitle());
            }
         }
+
     }
 
     @Override
@@ -93,6 +97,7 @@ public class CombinedAdapter extends RecyclerView.Adapter<CombinedAdapter.ViewHo
             image = itemView.findViewById(R.id.image);
             title = itemView.findViewById(R.id.title);
             item = itemView.findViewById(R.id.item);
+            //parent = itemView.findViewById(R.id.parent);
             item.setOnClickListener(this);
         }
 
@@ -105,25 +110,19 @@ public class CombinedAdapter extends RecyclerView.Adapter<CombinedAdapter.ViewHo
             switch (combined.getMedia_type()){
                 case "tv":
                     i = new Intent(view.getContext(), TvShowDetails.class);
-                    pair = new Pair[1];
-                    pair[0] = new Pair<View,String>(image,"poster");
-                    options = ActivityOptions.makeSceneTransitionAnimation((MainActivity)view.getContext(),pair);
+                    options = ActivityOptions.makeCustomAnimation((MainActivity)view.getContext(),R.anim.slide_from_right,R.anim.slide_to_left);
                     i.putExtra("media",(TvShow) combined.getMediaObject());
                     view.getContext().startActivity(i,options.toBundle());
                 break;
                 case "movie":
                     i = new Intent(view.getContext(), MovieDetails.class);
-                    pair = new Pair[1];
-                    pair[0] = new Pair<View,String>(image,"poster");
-                    options = ActivityOptions.makeSceneTransitionAnimation((MainActivity)view.getContext(),pair);
+                    options = ActivityOptions.makeCustomAnimation((MainActivity)view.getContext(),R.anim.slide_from_right,R.anim.slide_to_left);
                     i.putExtra("media",(Movie) combined.getMediaObject());
                     view.getContext().startActivity(i,options.toBundle());
                 break;
                 case "person":
                     i = new Intent(view.getContext(), PeopleDetails.class);
-                    pair = new Pair[1];
-                    pair[0] = new Pair<View,String>(image,"poster");
-                    options = ActivityOptions.makeSceneTransitionAnimation((MainActivity)view.getContext(),pair);
+                    options = ActivityOptions.makeCustomAnimation((MainActivity)view.getContext(),R.anim.slide_from_right,R.anim.slide_to_left);
                     PersonCredit person = new PersonCredit();
                     person.setId(combined.getId());
                     person.setName(combined.getName());

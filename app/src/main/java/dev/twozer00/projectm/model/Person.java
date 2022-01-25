@@ -10,6 +10,7 @@ public class Person implements Serializable {
 
     private boolean adult;
     ArrayList< String > also_known_as = new ArrayList<>();
+    private String known_for_department = null;
     private String biography = null;
     private String birthday = null;
     private String deathday = null;
@@ -25,7 +26,7 @@ public class Person implements Serializable {
     public Person() {
     }
 
-    public Person(boolean adult, ArrayList<String> also_known_as, String biography, String birthday, String deathday, float gender, String homepage, float id, String imdb_id, String name, String place_of_birth, float popularity, String profile_path) {
+    public Person(boolean adult, ArrayList<String> also_known_as,  String biography, String birthday, String deathday, float gender, String homepage, float id, String imdb_id, String name, String place_of_birth, float popularity, String profile_path) {
         this.adult = adult;
         this.also_known_as = also_known_as;
         this.biography = biography;
@@ -39,6 +40,14 @@ public class Person implements Serializable {
         this.place_of_birth = place_of_birth;
         this.popularity = popularity;
         this.profile_path = profile_path;
+    }
+
+    public String getKnown_for_department() {
+        return known_for_department;
+    }
+
+    public void setKnown_for_department(String known_for_department) {
+        this.known_for_department = known_for_department;
     }
 
     // Getter Methods

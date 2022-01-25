@@ -134,4 +134,23 @@ public class TvShow implements Serializable {
     public void setOriginal_name(String original_name) {
         this.original_name = original_name;
     }
+
+    @Override
+    public String toString() {
+        return "TvShow{" +
+                "poster_path='" + poster_path + '\'' +
+                ", popularity=" + popularity +
+                ", id=" + id +
+                ", backdrop_path='" + backdrop_path + '\'' +
+                ", vote_average=" + vote_average +
+                ", overview='" + overview + '\'' +
+                ", first_air_date='" + first_air_date + '\'' +
+                ", origin_country=" + origin_country +
+                ", genre_ids=" + genre_ids +
+                ", original_language='" + original_language + '\'' +
+                ", vote_count=" + vote_count +
+                ", name='" + name + '\'' +
+                ", original_name='" + original_name + '\'' +
+                '}';
+    }
 }
