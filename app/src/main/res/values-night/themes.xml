@@ -24,4 +24,9 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">1</item>
     </style>
+    <style name="statusBar">
+        <item name="statusBarScrim">@color/purple_dark</item>
+        <item name="android:background">@color/purple_dark</item>
+        <item name="contentScrim">@color/purple_dark</item>
+    </style>
 </resources>

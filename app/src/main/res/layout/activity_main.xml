@@ -31,9 +31,8 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:statusBarScrim="@color/purple_500"
+                android:theme="@style/statusBar"
                 android:id="@+id/barTitle">
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
@@ -52,7 +51,7 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/purple_500"
+                android:theme="@style/statusBar"
                 app:tabSelectedTextColor="@color/white"
                 app:tabIndicatorColor="@color/white"/>
         </com.google.android.material.appbar.AppBarLayout>

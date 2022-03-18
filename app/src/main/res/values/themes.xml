@@ -27,6 +27,12 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
 
+    <style name="statusBar">
+        <item name="statusBarScrim">@color/purple_500</item>
+        <item name="android:background">@color/purple_500</item>
+        <item name="contentScrim">@color/purple_500</item>
+    </style>
+
     <style name="MyTheme.ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:textColor">#ffffffff</item>
         <item name="colorControlNormal">@color/white</item>
